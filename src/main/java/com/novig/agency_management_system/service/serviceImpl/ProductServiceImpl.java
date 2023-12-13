@@ -49,7 +49,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateById(RequestProductDto requestProductDto) {
+    public Product updateProduct(RequestProductDto requestProductDto) {
         try {
             Optional<Product> productOptional = productRepo.findById(requestProductDto.getProductId());
 
@@ -72,4 +72,7 @@ public class ProductServiceImpl implements ProductService {
             throw new RuntimeException("Error updating employee", e);
         }
     }
+
+
+
 }

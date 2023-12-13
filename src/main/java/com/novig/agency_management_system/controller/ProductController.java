@@ -38,8 +38,8 @@ public class ProductController {
 
     }
     @PutMapping("/update")
-    public ResponseEntity<Product> updateById(@RequestBody RequestProductDto requestProductDto){
-        Product product = productService.updateById(requestProductDto);
+    public ResponseEntity<Product> updateProduct(@RequestBody RequestProductDto requestProductDto){
+        Product product = productService.updateProduct(requestProductDto);
         return ResponseEntity.ok(product);
     }
 }
