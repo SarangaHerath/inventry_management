@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Return {
+public class ReturnDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "return_id")

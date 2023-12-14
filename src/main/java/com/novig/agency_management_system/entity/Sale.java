@@ -30,7 +30,7 @@ public class Sale {
 
     @ManyToOne
     @JoinColumn(name = "return_id", nullable = false)
-    private Return aReturn;
+    private ReturnDetails returnDetails;
 
     @ManyToOne
     @JoinColumn(name = "payment_method_id", nullable = false)
