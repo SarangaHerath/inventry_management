@@ -69,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
         } catch (Exception e) {
 
             e.printStackTrace();
-            throw new RuntimeException("Error updating employee", e);
+            throw new RuntimeException("Error updating product", e);
         }
     }
 
