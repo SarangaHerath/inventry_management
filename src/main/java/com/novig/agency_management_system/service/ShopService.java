@@ -13,4 +13,6 @@ public interface ShopService {
     String deleteShop(Long id);
 
     Shop updateShop(RequestShopDto requestShopDto);
+
+    Shop getShopById(Long shopId);
 }

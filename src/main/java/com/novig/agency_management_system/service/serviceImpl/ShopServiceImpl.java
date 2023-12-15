@@ -68,5 +68,17 @@ public class ShopServiceImpl implements ShopService {
             throw new RuntimeException("Error updating shop", e);
         }
     }
+
+    @Override
+    public Shop getShopById(Long shopId) {
+        try {
+            return shopRepo.findById(shopId)
+                    .orElseThrow(() -> new EntityNotFoundException("Shop not found with id: " + shopId));
+        } catch (Exception e) {
+            // Log the exception or handle it based on your application's requirements.
+            e.printStackTrace();
+            throw new RuntimeException("Error getting shop by id", e);
+        }
+    }
 }
 

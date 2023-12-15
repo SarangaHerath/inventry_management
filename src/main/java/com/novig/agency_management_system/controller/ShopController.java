@@ -41,5 +41,9 @@ public class ShopController {
         Shop shop = shopService.updateShop(requestShopDto);
         return ResponseEntity.ok(shop);
     }
-
+    @GetMapping("/get-by-id/{id}")
+    public ResponseEntity<Shop> getShopById(@PathVariable Long id){
+        Shop shop = shopService.getShopById(id);
+        return ResponseEntity.ok(shop);
+    }
 }

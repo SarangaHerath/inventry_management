@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 public class ReturnDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "return_id")
-    private Long returnId;
+    @Column(name = "return_details_id")
+    private Long returnDetailsId;
 
     @ManyToOne
     @JoinColumn(name = "shop_id", nullable = false)

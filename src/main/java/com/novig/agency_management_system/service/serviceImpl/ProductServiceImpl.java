@@ -1,5 +1,6 @@
 package com.novig.agency_management_system.service.serviceImpl;
 
+import com.novig.agency_management_system.dto.requestDto.ProductDto;
 import com.novig.agency_management_system.dto.requestDto.RequestProductDto;
 import com.novig.agency_management_system.entity.Product;
 import com.novig.agency_management_system.repository.ProductRepo;
@@ -75,4 +76,38 @@ public class ProductServiceImpl implements ProductService {
 
 
 
+
+    public Product findOrCreateProduct(Long productId) {
+        // Attempt to find the product by ID
+        Optional<Product> optionalProduct = productRepo.findById(productId);
+
+        // If the product is found, return it
+        if (optionalProduct.isPresent()) {
+            return optionalProduct.get();
+        } else {
+            // If the product is not found, create a new one
+            Product newProduct = new Product();
+            // Set any necessary fields for the new product
+            // ...
+
+            // Save and return the new product
+            return productRepo.save(newProduct);
+        }
+    }
+
+    public Product findProductById(Long productId) {
+        // Assuming ProductRepository has a method to find by ID
+        return productRepo.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + productId));
+    }
+
+    public ProductDto convertToProductDto(Product product) {
+        ProductDto productDto = new ProductDto();
+        productDto.setProductId(product.getProductId());
+        productDto.setProductName(product.getProductName());
+        productDto.setQuantity(product.getQuantity());
+        productDto.setUnitPrice(product.getUnitPrice());
+        // set other fields if necessary
+        return productDto;
+    }
 }
