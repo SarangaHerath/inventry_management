@@ -18,16 +18,15 @@ public class SalesInvoiceController {
     @Autowired
     private SalesInvoiceService salesInvoiceService;
 
-    @PostMapping("/save")
-    public ResponseEntity<SalesInvoice> addSalesInvoice(@RequestBody SalesInvoiceDTO salesInvoiceDTO){
+    @PostMapping("/new")
+    public ResponseEntity<String> createSale(@RequestBody SalesInvoiceDTO salesInvoiceDTO) {
+        try {
+            // Call the service method to handle the creation of the new sale
+            salesInvoiceService.createNewSale(salesInvoiceDTO);
 
-        SalesInvoice salesInvoice = salesInvoiceService.addSalesInvoice(salesInvoiceDTO);
-        return ResponseEntity.ok(salesInvoice);
+            return new ResponseEntity<>("Sale created successfully", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-
-//    @GetMapping("/get-by-id/{id}")
-//    public ResponseEntity<SalesInvoice> getSalesInvoiceById(@PathVariable Long id) {
-//        SalesInvoice salesInvoice = salesInvoiceService.getSalesInvoiceById(id);
-//        return ResponseEntity.ok(salesInvoice);
-//    }
 }

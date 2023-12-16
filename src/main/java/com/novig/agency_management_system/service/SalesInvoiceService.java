@@ -6,8 +6,7 @@ import com.novig.agency_management_system.entity.SalesInvoice;
 import java.util.Optional;
 
 public interface SalesInvoiceService {
-    SalesInvoice addSalesInvoice(SalesInvoiceDTO salesInvoiceDTO);
 
 
-//    SalesInvoice getSalesInvoiceById(Long id);
+    void createNewSale(SalesInvoiceDTO salesInvoiceDTO);
 }

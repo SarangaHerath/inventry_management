@@ -12,11 +12,10 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class SalesInvoiceDTO {
-    private Long saleInvoiceId;
+    private Long id;
     private Long shopId;
-    private String shopName;
-    private Double totalAmount;
-    private Double discount;
-    private String paymentType;
+    private Long paymentMethodId;
+    private Long discountId;
+    private List<SalesInvoiceDetailsDTO> salesInvoiceDetails;
 
 }
