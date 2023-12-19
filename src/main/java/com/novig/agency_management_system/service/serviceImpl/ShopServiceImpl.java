@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Service
 public class ShopServiceImpl implements ShopService {
-    
+
     @Autowired
     private ShopRepo shopRepo;
 
@@ -24,7 +24,6 @@ public class ShopServiceImpl implements ShopService {
     private DeliveryRouteRepo deliveryRouteRepo;
 
 
-    
     @Override
     public Shop addShop(RequestShopDto requestShopDto) {
         try {

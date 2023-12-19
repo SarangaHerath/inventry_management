@@ -17,27 +17,28 @@ public class StockOutController {
     private StockOutService stockOutService;
 
     @PostMapping("/add-stockOut")
-    public ResponseEntity<StockOut> addStockOut(@RequestBody RequestStockOutDto requestStockOutDto){
+    public ResponseEntity<StockOut> addStockOut(@RequestBody RequestStockOutDto requestStockOutDto) {
 
         StockOut stockOut = stockOutService.addStockOut(requestStockOutDto);
         return ResponseEntity.ok(stockOut);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<StockOut>> getAllStockOut(){
+    public ResponseEntity<List<StockOut>> getAllStockOut() {
         List<StockOut> stockOutList = stockOutService.getAllStockOut();
         return ResponseEntity.ok(stockOutList);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteStockOut(@PathVariable Long id){
+    public ResponseEntity<String> deleteStockOut(@PathVariable Long id) {
         String status = stockOutService.deleteStockOut(id);
 
         return ResponseEntity.ok(status);
 
     }
+
     @PutMapping("/update")
-    public ResponseEntity<StockOut> updateStockOut(@RequestBody RequestStockOutDto requestStockOutDto){
+    public ResponseEntity<StockOut> updateStockOut(@RequestBody RequestStockOutDto requestStockOutDto) {
         StockOut stockOut = stockOutService.updateStockOut(requestStockOutDto);
         return ResponseEntity.ok(stockOut);
     }

@@ -1,6 +1,5 @@
 package com.novig.agency_management_system.dto.requestDto;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

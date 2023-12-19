@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @EnableJpaRepositories
-public interface SalesInvoiceDetailsRepo extends JpaRepository<SalesInvoiceDetails,Long> {
+public interface SalesInvoiceDetailsRepo extends JpaRepository<SalesInvoiceDetails, Long> {
 }

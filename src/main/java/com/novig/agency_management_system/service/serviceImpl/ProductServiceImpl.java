@@ -75,8 +75,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-
-
     public Product findOrCreateProduct(Long productId) {
         // Attempt to find the product by ID
         Optional<Product> optionalProduct = productRepo.findById(productId);

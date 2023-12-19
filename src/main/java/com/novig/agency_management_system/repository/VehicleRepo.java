@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @EnableJpaRepositories
-public interface VehicleRepo extends JpaRepository<Vehicle,Long> {
+public interface VehicleRepo extends JpaRepository<Vehicle, Long> {
 }

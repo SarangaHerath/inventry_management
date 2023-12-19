@@ -1,6 +1,5 @@
 package com.novig.agency_management_system.entity;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

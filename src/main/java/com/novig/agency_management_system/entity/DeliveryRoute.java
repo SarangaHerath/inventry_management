@@ -9,16 +9,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Vehicle {
-
+public class DeliveryRoute {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "vehicle_id")
-    private Long vehicleId;
+    @Column(name = "delivery_route_id")
+    private Long id;
 
-    @Column(name = "owner_name", nullable = false)
-    private String ownerName;
-
-    @Column(name = "vehicle_number", nullable = false)
-    private String vehicleNumber;
+    @Column(name = "route_name")
+    private String routeName;
 }

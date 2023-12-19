@@ -17,32 +17,34 @@ public class ShopController {
     private ShopService shopService;
 
     @PostMapping("/add-shop")
-    public ResponseEntity<Shop> addShop(@RequestBody RequestShopDto requestShopDto){
+    public ResponseEntity<Shop> addShop(@RequestBody RequestShopDto requestShopDto) {
 
         Shop shop = shopService.addShop(requestShopDto);
         return ResponseEntity.ok(shop);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Shop>> getAllShop(){
+    public ResponseEntity<List<Shop>> getAllShop() {
         List<Shop> shopList = shopService.getAllShop();
         return ResponseEntity.ok(shopList);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteShop(@PathVariable Long id){
+    public ResponseEntity<String> deleteShop(@PathVariable Long id) {
         String status = shopService.deleteShop(id);
 
         return ResponseEntity.ok(status);
 
     }
+
     @PutMapping("/update")
-    public ResponseEntity<Shop> updateShop(@RequestBody RequestShopDto requestShopDto){
+    public ResponseEntity<Shop> updateShop(@RequestBody RequestShopDto requestShopDto) {
         Shop shop = shopService.updateShop(requestShopDto);
         return ResponseEntity.ok(shop);
     }
+
     @GetMapping("/get-by-id/{id}")
-    public ResponseEntity<Shop> getShopById(@PathVariable Long id){
+    public ResponseEntity<Shop> getShopById(@PathVariable Long id) {
         Shop shop = shopService.getShopById(id);
         return ResponseEntity.ok(shop);
     }

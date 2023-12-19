@@ -2,7 +2,6 @@ package com.novig.agency_management_system.service.serviceImpl;
 
 import com.novig.agency_management_system.dto.requestDto.ProductDto;
 import com.novig.agency_management_system.dto.requestDto.SalesInvoiceDTO;
-import com.novig.agency_management_system.dto.requestDto.SalesInvoiceDetailsDTO;
 import com.novig.agency_management_system.entity.Product;
 import com.novig.agency_management_system.entity.SalesInvoice;
 import com.novig.agency_management_system.entity.SalesInvoiceDetails;

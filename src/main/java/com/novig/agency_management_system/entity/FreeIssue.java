@@ -23,7 +23,7 @@ public class FreeIssue {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @Column(name = "quantity",nullable = false)
+    @Column(name = "quantity", nullable = false)
     private int quantity;
 
     @Column(name = "free_issue_amount")

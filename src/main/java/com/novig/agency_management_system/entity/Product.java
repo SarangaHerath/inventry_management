@@ -22,19 +22,17 @@ public class Product {
     @Column(name = "product_name")
     private String productName;
 
-    @Column(name = "weight",nullable = false)
+    @Column(name = "weight", nullable = false)
     private String weight;
 
-    @Column(name = "date",nullable = false)
+    @Column(name = "date", nullable = false)
     private LocalDate date;
 
-    @Column(name = "unit_price",nullable = false)
+    @Column(name = "unit_price", nullable = false)
     private Double unitPrice;
 
-    @Column(name = "quantity",nullable = false)
+    @Column(name = "quantity", nullable = false)
     private int quantity;
-
-
 
 
 }

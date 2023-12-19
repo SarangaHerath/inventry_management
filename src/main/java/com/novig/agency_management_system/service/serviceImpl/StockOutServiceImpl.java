@@ -1,16 +1,15 @@
 package com.novig.agency_management_system.service.serviceImpl;
 
 import com.novig.agency_management_system.dto.requestDto.RequestStockOutDto;
-import com.novig.agency_management_system.entity.*;
+import com.novig.agency_management_system.entity.Product;
 import com.novig.agency_management_system.entity.StockOut;
-import com.novig.agency_management_system.entity.StockOut;
+import com.novig.agency_management_system.entity.Vehicle;
 import com.novig.agency_management_system.repository.ProductRepo;
 import com.novig.agency_management_system.repository.StockOutRepo;
 import com.novig.agency_management_system.repository.VehicleRepo;
 import com.novig.agency_management_system.service.ProductService;
 import com.novig.agency_management_system.service.StockOutService;
 import com.novig.agency_management_system.service.VehicleService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +18,7 @@ import java.util.Optional;
 
 @Service
 public class StockOutServiceImpl implements StockOutService {
-    
+
     @Autowired
     private StockOutRepo stockOutRepo;
 
@@ -28,13 +27,13 @@ public class StockOutServiceImpl implements StockOutService {
 
     @Autowired
     private VehicleService vehicleService;
-    
+
     @Autowired
     private VehicleRepo vehicleRepo;
-    
+
     @Autowired
     private ProductRepo productRepo;
-    
+
     @Override
     public List<StockOut> getAllStockOut() {
         List<StockOut> stockOutList = stockOutRepo.findAll();

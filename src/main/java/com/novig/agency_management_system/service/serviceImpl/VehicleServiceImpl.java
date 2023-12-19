@@ -1,7 +1,6 @@
 package com.novig.agency_management_system.service.serviceImpl;
 
 import com.novig.agency_management_system.dto.requestDto.RequestVehicleDto;
-import com.novig.agency_management_system.entity.Product;
 import com.novig.agency_management_system.entity.Vehicle;
 import com.novig.agency_management_system.repository.VehicleRepo;
 import com.novig.agency_management_system.service.VehicleService;
@@ -14,10 +13,10 @@ import java.util.Optional;
 
 @Service
 public class VehicleServiceImpl implements VehicleService {
-    
+
     @Autowired
     private VehicleRepo vehicleRepo;
-    
+
     @Override
     public Vehicle addVehicle(RequestVehicleDto requestVehicleDto) {
         try {
