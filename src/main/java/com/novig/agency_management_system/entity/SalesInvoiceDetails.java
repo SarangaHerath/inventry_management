@@ -27,4 +27,6 @@ public class SalesInvoiceDetails {
     private int quantity;
     private Double unitPrice;
 
+
+
 }

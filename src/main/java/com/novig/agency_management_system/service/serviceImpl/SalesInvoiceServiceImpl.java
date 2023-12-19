@@ -2,32 +2,36 @@ package com.novig.agency_management_system.service.serviceImpl;
 
 import com.novig.agency_management_system.dto.requestDto.ProductDto;
 import com.novig.agency_management_system.dto.requestDto.SalesInvoiceDTO;
-import com.novig.agency_management_system.entity.Product;
-import com.novig.agency_management_system.entity.SalesInvoice;
-import com.novig.agency_management_system.entity.SalesInvoiceDetails;
-import com.novig.agency_management_system.entity.Shop;
+import com.novig.agency_management_system.entity.*;
 import com.novig.agency_management_system.repository.SalesInvoiceDetailsRepo;
 import com.novig.agency_management_system.repository.SalesInvoiceRepo;
 import com.novig.agency_management_system.repository.ShopRepo;
 import com.novig.agency_management_system.service.SalesInvoiceService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class SalesInvoiceServiceImpl implements SalesInvoiceService {
 
     @Autowired
-    private SalesInvoiceRepo salesInvoiceRepository;
+    private SalesInvoiceRepo salesInvoiceRepo;
 
     @Autowired
-    private SalesInvoiceDetailsRepo salesInvoiceDetailsRepository;
+    private SalesInvoiceDetailsRepo salesInvoiceDetailsRepo;
 
     @Autowired
     private ShopRepo shopRepo;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     @Transactional // Enable transaction management
@@ -63,13 +67,50 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
             salesInvoice.setSalesInvoiceDetails(detailsList);
 
             // Save the SalesInvoice entity, which will cascade to SalesInvoiceDetails due to CascadeType.ALL
-            salesInvoiceRepository.save(salesInvoice);
+            salesInvoiceRepo.save(salesInvoice);
         } catch (Exception e) {
             // Log the exception for debugging purposes
             // logger.error("Error creating sale", e);
             throw new RuntimeException("Error creating sale: " + e.getMessage(), e);
         }
     }
+
+    @Override
+    public List<SalesInvoice> getAllSales() {
+
+        List<SalesInvoice> salesInvoiceList = salesInvoiceRepo.findAll();
+        return salesInvoiceList;
+    }
+
+    @Override
+    public List<SalesInvoiceDetails> getAllSalesDetails() {
+        List<SalesInvoiceDetails> salesInvoiceDetailsList = salesInvoiceDetailsRepo.findAll();
+        return salesInvoiceDetailsList;
+    }
+
+//    @Override
+//    @Transactional
+//    public String deleteSale(Long id) {
+//        try {
+//            SalesInvoice salesInvoice = salesInvoiceRepo.findById(id)
+//                    .orElseThrow(() -> new IllegalArgumentException("Sale not found with ID: " + id));
+//
+//            // Set foreign key to null in SalesInvoiceDetails
+//            if (salesInvoice.getSalesInvoiceDetails() != null) {
+//                for (SalesInvoiceDetails details : salesInvoice.getSalesInvoiceDetails()) {
+//                    details.setSalesInvoice(null);
+//                }
+//            }
+//
+//            salesInvoiceRepo.delete(salesInvoice);
+//            return "Sale and associated SalesInvoiceDetails updated for Sale ID: " + id;
+//        } catch (Exception e) {
+//            // Log the exception for debugging purposes
+//            // logger.error("Error deleting sale", e);
+//            throw new RuntimeException("Error deleting sale: " + e.getMessage(), e);
+//        }
+//    }
+
 
     private Product productDtoToEntity(ProductDto productDto) {
         Product product = new Product();

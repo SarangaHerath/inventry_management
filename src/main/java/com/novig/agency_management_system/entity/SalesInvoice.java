@@ -1,5 +1,6 @@
 package com.novig.agency_management_system.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,6 +34,7 @@ public class SalesInvoice {
     private Double discount;
 
     @OneToMany(mappedBy = "salesInvoice", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<SalesInvoiceDetails> salesInvoiceDetails;
 
 

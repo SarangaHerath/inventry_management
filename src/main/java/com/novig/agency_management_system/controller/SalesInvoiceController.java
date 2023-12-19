@@ -1,11 +1,15 @@
 package com.novig.agency_management_system.controller;
 
 import com.novig.agency_management_system.dto.requestDto.SalesInvoiceDTO;
+import com.novig.agency_management_system.entity.SalesInvoice;
+import com.novig.agency_management_system.entity.SalesInvoiceDetails;
 import com.novig.agency_management_system.service.SalesInvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -15,7 +19,7 @@ public class SalesInvoiceController {
     @Autowired
     private SalesInvoiceService salesInvoiceService;
 
-    @PostMapping("/new")
+    @PostMapping("/save")
     public ResponseEntity<String> createSale(@RequestBody SalesInvoiceDTO salesInvoiceDTO) {
         try {
             // Call the service method to handle the creation of the new sale
@@ -25,5 +29,22 @@ public class SalesInvoiceController {
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+//    @DeleteMapping("/delete/{id}")
+//    public ResponseEntity<String> deleteSale(@PathVariable Long id){
+//        String res = salesInvoiceService.deleteSale(id);
+//        return ResponseEntity.ok(res);
+//
+//    }
+    @GetMapping("/getAllSales")
+    public ResponseEntity<List<SalesInvoice>> getAllSales(){
+        List<SalesInvoice> salesInvoiceList = salesInvoiceService.getAllSales();
+        return ResponseEntity.ok(salesInvoiceList);
+    }
+
+    @GetMapping("/getAllSalesDetails")
+    public ResponseEntity<List<SalesInvoiceDetails>> getAllSalesDetails(){
+        List<SalesInvoiceDetails> salesInvoiceDetails = salesInvoiceService.getAllSalesDetails();
+        return ResponseEntity.ok(salesInvoiceDetails);
     }
 }
