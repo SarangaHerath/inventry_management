@@ -15,7 +15,7 @@ public class ChequeDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "cheque_id")
-    private Long freeIssueId;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "shop_id", nullable = false)
