@@ -14,8 +14,9 @@ import java.util.List;
 public class SalesInvoiceDTO {
     private Long id;
     private Long shopId;
-    private Long paymentMethodId;
-    private Long discountId;
+    private Double freeItems;
+    private String paymentMethod;
+    private Double discount;
     private List<SalesInvoiceDetailsDTO> salesInvoiceDetails;
 
 }

@@ -24,13 +24,14 @@ public class SalesInvoice {
     @JoinColumn(name = "shop_id")
     private Shop shop;
 
-    @ManyToOne
-    @JoinColumn(name = "payment_method_id")
-    private PaymentMethod paymentMethod;
+    @Column(name = "freeItems")
+    private Double freeItems;
 
-    @ManyToOne
-    @JoinColumn(name = "discount_id")
-    private Discount discount;
+    @Column(name = "paymentMethod")
+    private String paymentMethod;
+
+    @Column(name = "discount")
+    private Double discount;
 
     @OneToMany(mappedBy = "salesInvoice", cascade = CascadeType.ALL)
     private List<SalesInvoiceDetails> salesInvoiceDetails;
