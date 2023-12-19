@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class RequestShopDto {
 
     private Long shopId;
+    private Long delivery_route_id;
     private String shopName;
     private String address;
     private String phoneNumber;

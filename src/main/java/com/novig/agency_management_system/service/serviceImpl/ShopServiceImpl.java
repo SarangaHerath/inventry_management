@@ -2,7 +2,9 @@ package com.novig.agency_management_system.service.serviceImpl;
 
 
 import com.novig.agency_management_system.dto.requestDto.RequestShopDto;
+import com.novig.agency_management_system.entity.DeliveryRoute;
 import com.novig.agency_management_system.entity.Shop;
+import com.novig.agency_management_system.repository.DeliveryRouteRepo;
 import com.novig.agency_management_system.repository.ShopRepo;
 import com.novig.agency_management_system.service.ShopService;
 import jakarta.persistence.EntityNotFoundException;
@@ -17,12 +19,19 @@ public class ShopServiceImpl implements ShopService {
     
     @Autowired
     private ShopRepo shopRepo;
+
+    @Autowired
+    private DeliveryRouteRepo deliveryRouteRepo;
+
+
     
     @Override
     public Shop addShop(RequestShopDto requestShopDto) {
         try {
+            DeliveryRoute deliveryRoute = deliveryRouteRepo.getById(requestShopDto.getDelivery_route_id());
             Shop shop = new Shop(
                     requestShopDto.getShopId(),
+                    deliveryRoute,
                     requestShopDto.getShopName(),
                     requestShopDto.getAddress(),
                     requestShopDto.getPhoneNumber()
