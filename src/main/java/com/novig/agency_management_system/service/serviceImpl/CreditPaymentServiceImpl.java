@@ -1,12 +1,9 @@
 package com.novig.agency_management_system.service.serviceImpl;
 
 import com.novig.agency_management_system.dto.requestDto.RequestChequeDateRangeDto;
-import com.novig.agency_management_system.dto.requestDto.RequestChequeDto;
 import com.novig.agency_management_system.dto.requestDto.RequestCreditPaymentDto;
 import com.novig.agency_management_system.entity.CreditPaymentDetails;
-import com.novig.agency_management_system.entity.CreditPaymentDetails;
 import com.novig.agency_management_system.entity.Shop;
-import com.novig.agency_management_system.repository.ChequeDetailsRepo;
 import com.novig.agency_management_system.repository.CreditPaymentRepo;
 import com.novig.agency_management_system.repository.ShopRepo;
 import com.novig.agency_management_system.service.CreditPaymentService;
@@ -24,6 +21,7 @@ public class CreditPaymentServiceImpl implements CreditPaymentService {
     private ShopRepo shopRepo;
     @Autowired
     private CreditPaymentRepo creditPaymentRepo;
+
     @Override
     public CreditPaymentDetails saveCreditPaymentDetails(RequestCreditPaymentDto requestCreditPaymentDto) {
         CreditPaymentDetails creditPaymentDetails = new CreditPaymentDetails();
@@ -71,7 +69,7 @@ public class CreditPaymentServiceImpl implements CreditPaymentService {
 
     @Override
     public List<CreditPaymentDetails> getCreditDetailsByDateRange(RequestChequeDateRangeDto requestChequeDateRangeDto) {
-        List<CreditPaymentDetails> creditPaymentDetailsList = creditPaymentRepo.findByBillDateBetween(requestChequeDateRangeDto.getFromDate(),requestChequeDateRangeDto.getToDate());
+        List<CreditPaymentDetails> creditPaymentDetailsList = creditPaymentRepo.findByBillDateBetween(requestChequeDateRangeDto.getFromDate(), requestChequeDateRangeDto.getToDate());
         return creditPaymentDetailsList;
     }
 }

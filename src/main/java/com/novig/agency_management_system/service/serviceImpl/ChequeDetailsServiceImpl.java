@@ -21,6 +21,7 @@ public class ChequeDetailsServiceImpl implements ChequeDetailsService {
     private ShopRepo shopRepo;
     @Autowired
     private ChequeDetailsRepo chequeDetailsRepo;
+
     @Override
     public ChequeDetails saveChequeDetails(RequestChequeDto requestChequeDto) {
         ChequeDetails chequeDetails = new ChequeDetails();
@@ -69,7 +70,7 @@ public class ChequeDetailsServiceImpl implements ChequeDetailsService {
     @Override
     public List<ChequeDetails> getChequeDetailsByDateRange(RequestChequeDateRangeDto requestChequeDateRangeDto) {
 
-        List<ChequeDetails> chequeDetailsList = chequeDetailsRepo.findByReceivedDateBetween(requestChequeDateRangeDto.getFromDate(),requestChequeDateRangeDto.getToDate());
+        List<ChequeDetails> chequeDetailsList = chequeDetailsRepo.findByReceivedDateBetween(requestChequeDateRangeDto.getFromDate(), requestChequeDateRangeDto.getToDate());
         return chequeDetailsList;
     }
 

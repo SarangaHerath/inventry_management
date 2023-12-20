@@ -2,7 +2,6 @@ package com.novig.agency_management_system.controller;
 
 import com.novig.agency_management_system.dto.requestDto.RequestChequeDateRangeDto;
 import com.novig.agency_management_system.dto.requestDto.RequestCreditPaymentDto;
-import com.novig.agency_management_system.entity.ChequeDetails;
 import com.novig.agency_management_system.entity.CreditPaymentDetails;
 import com.novig.agency_management_system.service.CreditPaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +45,9 @@ public class CreditPaymentController {
 
         return ResponseEntity.ok(creditPaymentDetails);
     }
+
     @GetMapping("/getCreditByDateRange")
-    public ResponseEntity<List<CreditPaymentDetails>> getCreditDetailsByDateRange(@RequestBody RequestChequeDateRangeDto requestChequeDateRangeDto){
+    public ResponseEntity<List<CreditPaymentDetails>> getCreditDetailsByDateRange(@RequestBody RequestChequeDateRangeDto requestChequeDateRangeDto) {
         List<CreditPaymentDetails> creditPaymentDetailsList = creditPaymentService.getCreditDetailsByDateRange(requestChequeDateRangeDto);
         return ResponseEntity.ok(creditPaymentDetailsList);
     }

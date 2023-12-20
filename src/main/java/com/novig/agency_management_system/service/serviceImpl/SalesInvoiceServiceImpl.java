@@ -3,7 +3,10 @@ package com.novig.agency_management_system.service.serviceImpl;
 import com.novig.agency_management_system.dto.requestDto.ProductDto;
 import com.novig.agency_management_system.dto.requestDto.SalesInvoiceDTO;
 import com.novig.agency_management_system.dto.responseDto.ResponseDailyTotalSalesDto;
-import com.novig.agency_management_system.entity.*;
+import com.novig.agency_management_system.entity.Product;
+import com.novig.agency_management_system.entity.SalesInvoice;
+import com.novig.agency_management_system.entity.SalesInvoiceDetails;
+import com.novig.agency_management_system.entity.Shop;
 import com.novig.agency_management_system.repository.SalesInvoiceDetailsRepo;
 import com.novig.agency_management_system.repository.SalesInvoiceRepo;
 import com.novig.agency_management_system.repository.ShopRepo;
@@ -15,9 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

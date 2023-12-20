@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 @EnableJpaRepositories
-public interface ChequeDetailsRepo extends JpaRepository<ChequeDetails,Long> {
+public interface ChequeDetailsRepo extends JpaRepository<ChequeDetails, Long> {
 
     List<ChequeDetails> findByReceivedDateBetween(LocalDate fromDate, LocalDate toDate);
 }

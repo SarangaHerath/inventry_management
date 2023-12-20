@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 @EnableJpaRepositories
-public interface CreditPaymentRepo extends JpaRepository<CreditPaymentDetails,Long> {
+public interface CreditPaymentRepo extends JpaRepository<CreditPaymentDetails, Long> {
     List<CreditPaymentDetails> findByBillDateBetween(LocalDate fromDate, LocalDate toDate);
 }

@@ -1,9 +1,5 @@
 package com.novig.agency_management_system.dto.requestDto;
 
-import com.novig.agency_management_system.entity.Shop;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
