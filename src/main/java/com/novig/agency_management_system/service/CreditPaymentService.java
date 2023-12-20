@@ -1,5 +1,6 @@
 package com.novig.agency_management_system.service;
 
+import com.novig.agency_management_system.dto.requestDto.RequestChequeDateRangeDto;
 import com.novig.agency_management_system.dto.requestDto.RequestCreditPaymentDto;
 import com.novig.agency_management_system.entity.CreditPaymentDetails;
 
@@ -13,4 +14,6 @@ public interface CreditPaymentService {
     List<CreditPaymentDetails> getAllCreditPayment();
 
     CreditPaymentDetails updateCreditPayment(RequestCreditPaymentDto requestCreditPaymentDto);
+
+    List<CreditPaymentDetails> getCreditDetailsByDateRange(RequestChequeDateRangeDto requestChequeDateRangeDto);
 }

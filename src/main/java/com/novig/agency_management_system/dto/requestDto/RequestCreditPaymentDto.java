@@ -18,6 +18,7 @@ import java.time.LocalDate;
 public class RequestCreditPaymentDto {
     private Long creditId;
     private Long shop_id;
+    private LocalDate billDate;
     private Double creditAmount;
     private Double paidAmount;
     private LocalDate lastPaymentDate;

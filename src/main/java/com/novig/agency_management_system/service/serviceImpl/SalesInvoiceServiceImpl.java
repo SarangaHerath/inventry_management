@@ -2,6 +2,7 @@ package com.novig.agency_management_system.service.serviceImpl;
 
 import com.novig.agency_management_system.dto.requestDto.ProductDto;
 import com.novig.agency_management_system.dto.requestDto.SalesInvoiceDTO;
+import com.novig.agency_management_system.dto.responseDto.ResponseDailyTotalSalesDto;
 import com.novig.agency_management_system.entity.*;
 import com.novig.agency_management_system.repository.SalesInvoiceDetailsRepo;
 import com.novig.agency_management_system.repository.SalesInvoiceRepo;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +49,9 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
 
             // Set the SalesInvoice properties
             salesInvoice.setShop(shop);
+            salesInvoice.setDate(salesInvoiceDTO.getDate());
+            salesInvoice.setReturnValue(salesInvoiceDTO.getReturnValue());
+            salesInvoice.setTotal(salesInvoiceDTO.getTotal());
             salesInvoice.setFreeItems(salesInvoiceDTO.getFreeItems());
             salesInvoice.setPaymentMethod(salesInvoiceDTO.getPaymentMethod());
             salesInvoice.setDiscount(salesInvoiceDTO.getDiscount());
@@ -86,6 +91,22 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
     public List<SalesInvoiceDetails> getAllSalesDetails() {
         List<SalesInvoiceDetails> salesInvoiceDetailsList = salesInvoiceDetailsRepo.findAll();
         return salesInvoiceDetailsList;
+    }
+
+    @Override
+    public ResponseDailyTotalSalesDto getDailyTotal(LocalDate date) {
+        Double chequeTotal = salesInvoiceRepo.getChequeTotalByDate(date);
+        Double creditTotal = salesInvoiceRepo.getCreditTotalByDate(date);
+        Double cashTotal = salesInvoiceRepo.getCashTotalByDate(date);
+        Double total = salesInvoiceRepo.getTotalByDate(date);
+
+        ResponseDailyTotalSalesDto responseDto = new ResponseDailyTotalSalesDto();
+        responseDto.setChequeTotal(chequeTotal);
+        responseDto.setCreditTotal(creditTotal);
+        responseDto.setCashTotal(cashTotal);
+        responseDto.setTotal(total);
+
+        return responseDto;
     }
 
 //    @Override

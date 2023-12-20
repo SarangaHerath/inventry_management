@@ -1,5 +1,6 @@
 package com.novig.agency_management_system.controller;
 
+import com.novig.agency_management_system.dto.requestDto.RequestChequeDateRangeDto;
 import com.novig.agency_management_system.dto.requestDto.RequestChequeDto;
 import com.novig.agency_management_system.entity.ChequeDetails;
 import com.novig.agency_management_system.service.ChequeDetailsService;
@@ -41,6 +42,11 @@ public class ChequeDetailsController {
         ChequeDetails chequeDetails = chequeDetailsService.updateCheque(requestChequeDto);
 
         return ResponseEntity.ok(chequeDetails);
+    }
+    @GetMapping("/getChequeByDateRange")
+    public ResponseEntity<List<ChequeDetails>> getChequeDetailsByDateRange(@RequestBody RequestChequeDateRangeDto requestChequeDateRangeDto){
+        List<ChequeDetails> chequeDetailsList = chequeDetailsService.getChequeDetailsByDateRange(requestChequeDateRangeDto);
+        return ResponseEntity.ok(chequeDetailsList);
     }
 
 }

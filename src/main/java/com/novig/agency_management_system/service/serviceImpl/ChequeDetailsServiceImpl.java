@@ -1,5 +1,6 @@
 package com.novig.agency_management_system.service.serviceImpl;
 
+import com.novig.agency_management_system.dto.requestDto.RequestChequeDateRangeDto;
 import com.novig.agency_management_system.dto.requestDto.RequestChequeDto;
 import com.novig.agency_management_system.entity.ChequeDetails;
 import com.novig.agency_management_system.entity.Shop;
@@ -63,6 +64,13 @@ public class ChequeDetailsServiceImpl implements ChequeDetailsService {
             // Handle the case where the entity is not found (e.g., throw an exception or return null)
             throw new EntityNotFoundException("ChequeDetails not found with ID: " + requestChequeDto.getId());
         }
+    }
+
+    @Override
+    public List<ChequeDetails> getChequeDetailsByDateRange(RequestChequeDateRangeDto requestChequeDateRangeDto) {
+
+        List<ChequeDetails> chequeDetailsList = chequeDetailsRepo.findByReceivedDateBetween(requestChequeDateRangeDto.getFromDate(),requestChequeDateRangeDto.getToDate());
+        return chequeDetailsList;
     }
 
 
