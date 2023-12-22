@@ -1,5 +1,6 @@
 package com.novig.agency_management_system.service;
 
+import com.novig.agency_management_system.dto.requestDto.RequestChequeDateRangeDto;
 import com.novig.agency_management_system.dto.requestDto.RequestChequeDto;
 import com.novig.agency_management_system.entity.ChequeDetails;
 
@@ -13,4 +14,6 @@ public interface ChequeDetailsService {
     List<ChequeDetails> getAllCheque();
 
     ChequeDetails updateCheque(RequestChequeDto requestChequeDto);
+
+    List<ChequeDetails> getChequeDetailsByDateRange(RequestChequeDateRangeDto requestChequeDateRangeDto);
 }

@@ -13,5 +13,7 @@ public interface DeliveryRouteService {
 
     String deleteRoute(Long id);
 
-    DeliveryRoute updateShop(RequestDeliveryRouteDto requestDeliveryRouteDto);
+    DeliveryRoute updateRoute(RequestDeliveryRouteDto requestDeliveryRouteDto);
+
+    DeliveryRoute getRouteById(Long id);
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin("**")
+@CrossOrigin
 @RequestMapping("api/v1/vehicle")
 public class VehicleController {
     @Autowired

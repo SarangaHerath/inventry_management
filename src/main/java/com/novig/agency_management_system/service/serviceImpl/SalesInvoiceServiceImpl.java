@@ -2,7 +2,11 @@ package com.novig.agency_management_system.service.serviceImpl;
 
 import com.novig.agency_management_system.dto.requestDto.ProductDto;
 import com.novig.agency_management_system.dto.requestDto.SalesInvoiceDTO;
-import com.novig.agency_management_system.entity.*;
+import com.novig.agency_management_system.dto.responseDto.ResponseDailyTotalSalesDto;
+import com.novig.agency_management_system.entity.Product;
+import com.novig.agency_management_system.entity.SalesInvoice;
+import com.novig.agency_management_system.entity.SalesInvoiceDetails;
+import com.novig.agency_management_system.entity.Shop;
 import com.novig.agency_management_system.repository.SalesInvoiceDetailsRepo;
 import com.novig.agency_management_system.repository.SalesInvoiceRepo;
 import com.novig.agency_management_system.repository.ShopRepo;
@@ -13,9 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,8 +50,13 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
 
             // Set the SalesInvoice properties
             salesInvoice.setShop(shop);
+            salesInvoice.setDate(salesInvoiceDTO.getDate());
+            salesInvoice.setReturnValue(salesInvoiceDTO.getReturnValue());
+            salesInvoice.setTotal(salesInvoiceDTO.getTotal());
             salesInvoice.setFreeItems(salesInvoiceDTO.getFreeItems());
-            salesInvoice.setPaymentMethod(salesInvoiceDTO.getPaymentMethod());
+            salesInvoice.setCash(salesInvoiceDTO.getCash());
+            salesInvoice.setCredit(salesInvoiceDTO.getCredit());
+            salesInvoice.setCheque(salesInvoiceDTO.getCheque());
             salesInvoice.setDiscount(salesInvoiceDTO.getDiscount());
 
             // Create a list of SalesInvoiceDetails entities
@@ -87,6 +95,40 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
         List<SalesInvoiceDetails> salesInvoiceDetailsList = salesInvoiceDetailsRepo.findAll();
         return salesInvoiceDetailsList;
     }
+
+    @Override
+    public ResponseDailyTotalSalesDto getDailyTotal(LocalDate date) {
+
+        LocalDate startDate = date;
+        LocalDate endDate = date.plusDays(1);
+        // Fetch sales invoices within the specified date range
+        List<SalesInvoice> invoices = salesInvoiceRepo.findByDateBetween(startDate, endDate);
+
+        // Calculate total values from fetched invoices
+        Double cashTotal = 0.0;
+        Double creditTotal = 0.0;
+        Double chequeTotal = 0.0;
+        Double total = 0.0;
+
+        for (SalesInvoice invoice : invoices) {
+            cashTotal += (invoice.getCash() != null) ? invoice.getCash() : 0.0;
+            creditTotal += (invoice.getCredit() != null) ? invoice.getCredit() : 0.0;
+            chequeTotal += (invoice.getCheque() != null) ? invoice.getCheque() : 0.0;
+            total += (invoice.getTotal() != null) ? invoice.getTotal() : 0.0;
+        }
+
+        // Create and return the response DTO
+        return new ResponseDailyTotalSalesDto(chequeTotal, creditTotal, cashTotal, total);
+    }
+
+    private Double parseDouble(String value) {
+        try {
+            return Double.parseDouble(value);
+        } catch (NumberFormatException e) {
+            return 0.0;
+        }
+    }
+
 
 //    @Override
 //    @Transactional

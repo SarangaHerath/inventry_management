@@ -9,12 +9,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class RequestChequeDto {
-    private Long id;
-    private Long shop_id;
-    private String chequeNumber;
-    private LocalDate receivedDate;
-    private LocalDate bankDate;
-    private Double amount;
+public class RequestDailyTotalSalesDto {
+    private LocalDate date;
 }
-

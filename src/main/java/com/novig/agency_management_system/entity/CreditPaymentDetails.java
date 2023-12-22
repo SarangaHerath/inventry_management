@@ -26,6 +26,9 @@ public class CreditPaymentDetails {
     @Column(name = "credit_amount")
     private Double creditAmount;
 
+    @Column(name = "bill_date", nullable = false)
+    private LocalDate billDate;
+
     @Column(name = "paid_amount")
     private Double paidAmount;
 

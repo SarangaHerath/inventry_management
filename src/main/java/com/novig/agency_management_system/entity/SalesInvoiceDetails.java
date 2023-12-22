@@ -28,5 +28,4 @@ public class SalesInvoiceDetails {
     private Double unitPrice;
 
 
-
 }

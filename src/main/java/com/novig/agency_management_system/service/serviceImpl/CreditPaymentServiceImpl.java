@@ -1,11 +1,9 @@
 package com.novig.agency_management_system.service.serviceImpl;
 
-import com.novig.agency_management_system.dto.requestDto.RequestChequeDto;
+import com.novig.agency_management_system.dto.requestDto.RequestChequeDateRangeDto;
 import com.novig.agency_management_system.dto.requestDto.RequestCreditPaymentDto;
 import com.novig.agency_management_system.entity.CreditPaymentDetails;
-import com.novig.agency_management_system.entity.CreditPaymentDetails;
 import com.novig.agency_management_system.entity.Shop;
-import com.novig.agency_management_system.repository.ChequeDetailsRepo;
 import com.novig.agency_management_system.repository.CreditPaymentRepo;
 import com.novig.agency_management_system.repository.ShopRepo;
 import com.novig.agency_management_system.service.CreditPaymentService;
@@ -23,6 +21,7 @@ public class CreditPaymentServiceImpl implements CreditPaymentService {
     private ShopRepo shopRepo;
     @Autowired
     private CreditPaymentRepo creditPaymentRepo;
+
     @Override
     public CreditPaymentDetails saveCreditPaymentDetails(RequestCreditPaymentDto requestCreditPaymentDto) {
         CreditPaymentDetails creditPaymentDetails = new CreditPaymentDetails();
@@ -30,6 +29,7 @@ public class CreditPaymentServiceImpl implements CreditPaymentService {
 
         creditPaymentDetails.setCreditAmount(requestCreditPaymentDto.getCreditAmount());
         creditPaymentDetails.setPaidAmount(requestCreditPaymentDto.getPaidAmount());
+        creditPaymentDetails.setBillDate(requestCreditPaymentDto.getBillDate());
         creditPaymentDetails.setLastPaymentDate(requestCreditPaymentDto.getLastPaymentDate());
         creditPaymentDetails.setShop(shop);
 
@@ -56,6 +56,7 @@ public class CreditPaymentServiceImpl implements CreditPaymentService {
         if (optionalCreditPaymentDetails.isPresent()) {
             CreditPaymentDetails creditPaymentDetails = optionalCreditPaymentDetails.get();
             creditPaymentDetails.setCreditAmount(requestCreditPaymentDto.getCreditAmount());
+            creditPaymentDetails.setBillDate(requestCreditPaymentDto.getBillDate());
             creditPaymentDetails.setLastPaymentDate(requestCreditPaymentDto.getLastPaymentDate());
             creditPaymentDetails.setPaidAmount(requestCreditPaymentDto.getPaidAmount());
             creditPaymentRepo.save(creditPaymentDetails);
@@ -65,5 +66,11 @@ public class CreditPaymentServiceImpl implements CreditPaymentService {
             throw new EntityNotFoundException("CreditPaymentDetails not found with ID: " + requestCreditPaymentDto.getCreditId());
         }
     }
+
+    @Override
+    public List<CreditPaymentDetails> getCreditDetailsByDateRange(RequestChequeDateRangeDto requestChequeDateRangeDto) {
+        List<CreditPaymentDetails> creditPaymentDetailsList = creditPaymentRepo.findByBillDateBetween(requestChequeDateRangeDto.getFromDate(), requestChequeDateRangeDto.getToDate());
+        return creditPaymentDetailsList;
     }
+}
 
