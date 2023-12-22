@@ -16,5 +16,4 @@ public class SalesInvoiceDTO {
     private String paymentMethod;
     private Double discount;
     private List<SalesInvoiceDetailsDTO> salesInvoiceDetails;
-
 }
