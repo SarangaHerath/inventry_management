@@ -2,6 +2,7 @@ package com.novig.agency_management_system.service.serviceImpl;
 
 
 import com.novig.agency_management_system.dto.requestDto.RequestShopDto;
+import com.novig.agency_management_system.dto.responseDto.ShopDTO;
 import com.novig.agency_management_system.entity.DeliveryRoute;
 import com.novig.agency_management_system.entity.Shop;
 import com.novig.agency_management_system.repository.DeliveryRouteRepo;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ShopServiceImpl implements ShopService {
@@ -44,9 +46,11 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public List<Shop> getAllShop() {
+    public List<ShopDTO> getAllShop() {
         List<Shop> shopList = shopRepo.findAll();
-        return shopList;
+        return shopList.stream()
+                .map(Shop::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override

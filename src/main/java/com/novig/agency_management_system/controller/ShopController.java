@@ -1,6 +1,7 @@
 package com.novig.agency_management_system.controller;
 
 import com.novig.agency_management_system.dto.requestDto.RequestShopDto;
+import com.novig.agency_management_system.dto.responseDto.ShopDTO;
 import com.novig.agency_management_system.entity.Shop;
 import com.novig.agency_management_system.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,8 @@ public class ShopController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Shop>> getAllShop() {
-        List<Shop> shopList = shopService.getAllShop();
+    public ResponseEntity<List<ShopDTO>> getAllShop() {
+        List<ShopDTO> shopList = shopService.getAllShop();
         return ResponseEntity.ok(shopList);
     }
 
