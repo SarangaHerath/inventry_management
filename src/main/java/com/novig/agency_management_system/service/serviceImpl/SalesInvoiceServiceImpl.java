@@ -54,7 +54,9 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
             salesInvoice.setReturnValue(salesInvoiceDTO.getReturnValue());
             salesInvoice.setTotal(salesInvoiceDTO.getTotal());
             salesInvoice.setFreeItems(salesInvoiceDTO.getFreeItems());
-            salesInvoice.setPaymentMethod(salesInvoiceDTO.getPaymentMethod());
+            salesInvoice.setCash(salesInvoiceDTO.getCash());
+            salesInvoice.setCredit(salesInvoiceDTO.getCredit());
+            salesInvoice.setCheque(salesInvoiceDTO.getCheque());
             salesInvoice.setDiscount(salesInvoiceDTO.getDiscount());
 
             // Create a list of SalesInvoiceDetails entities
@@ -96,19 +98,37 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
 
     @Override
     public ResponseDailyTotalSalesDto getDailyTotal(LocalDate date) {
-        Double chequeTotal = salesInvoiceRepo.getChequeTotalByDate(date);
-        Double creditTotal = salesInvoiceRepo.getCreditTotalByDate(date);
-        Double cashTotal = salesInvoiceRepo.getCashTotalByDate(date);
-        Double total = salesInvoiceRepo.getTotalByDate(date);
 
-        ResponseDailyTotalSalesDto responseDto = new ResponseDailyTotalSalesDto();
-        responseDto.setChequeTotal(chequeTotal);
-        responseDto.setCreditTotal(creditTotal);
-        responseDto.setCashTotal(cashTotal);
-        responseDto.setTotal(total);
+        LocalDate startDate = date;
+        LocalDate endDate = date.plusDays(1);
+        // Fetch sales invoices within the specified date range
+        List<SalesInvoice> invoices = salesInvoiceRepo.findByDateBetween(startDate, endDate);
 
-        return responseDto;
+        // Calculate total values from fetched invoices
+        Double cashTotal = 0.0;
+        Double creditTotal = 0.0;
+        Double chequeTotal = 0.0;
+        Double total = 0.0;
+
+        for (SalesInvoice invoice : invoices) {
+            cashTotal += (invoice.getCash() != null) ? invoice.getCash() : 0.0;
+            creditTotal += (invoice.getCredit() != null) ? invoice.getCredit() : 0.0;
+            chequeTotal += (invoice.getCheque() != null) ? invoice.getCheque() : 0.0;
+            total += (invoice.getTotal() != null) ? invoice.getTotal() : 0.0;
+        }
+
+        // Create and return the response DTO
+        return new ResponseDailyTotalSalesDto(chequeTotal, creditTotal, cashTotal, total);
     }
+
+    private Double parseDouble(String value) {
+        try {
+            return Double.parseDouble(value);
+        } catch (NumberFormatException e) {
+            return 0.0;
+        }
+    }
+
 
 //    @Override
 //    @Transactional

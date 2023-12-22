@@ -17,7 +17,9 @@ public class SalesInvoiceDTO {
     private Double returnValue;
     private LocalDate date;
     private Double freeItems;
-    private String paymentMethod;
+    private Double cash;
+    private Double credit;
+    private Double cheque;
     private Double discount;
     private List<SalesInvoiceDetailsDTO> salesInvoiceDetails;
 

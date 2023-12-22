@@ -63,7 +63,7 @@ public class DeliveryRouteServiceImpl implements DeliveryRouteService {
     }
 
     @Override
-    public DeliveryRoute updateShop(RequestDeliveryRouteDto requestDeliveryRouteDto) {
+    public DeliveryRoute updateRoute(RequestDeliveryRouteDto requestDeliveryRouteDto) {
         try {
             Optional<DeliveryRoute> deliveryRoute = deliveryRouteRepo.findById(requestDeliveryRouteDto.getId());
 
@@ -80,6 +80,12 @@ public class DeliveryRouteServiceImpl implements DeliveryRouteService {
             e.printStackTrace();
             throw new RuntimeException("Error updating route", e);
         }
+    }
+
+    @Override
+    public DeliveryRoute getRouteById(Long id) {
+        DeliveryRoute deliveryRoute = deliveryRouteRepo.findById(id).get();
+        return deliveryRoute;
     }
 
 }
