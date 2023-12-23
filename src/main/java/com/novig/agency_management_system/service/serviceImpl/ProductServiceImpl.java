@@ -108,4 +108,8 @@ public class ProductServiceImpl implements ProductService {
         // set other fields if necessary
         return productDto;
     }
+    public Optional<Product> getProductById(Long id) {
+        return productRepo.findById(id);
+    }
+
 }
