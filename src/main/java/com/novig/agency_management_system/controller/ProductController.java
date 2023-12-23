@@ -8,10 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
-@CrossOrigin
+@CrossOrigin()
 @RequestMapping("api/v1/product")
 public class ProductController {
 
@@ -44,4 +45,13 @@ public class ProductController {
         Product product = productService.updateProduct(requestProductDto);
         return ResponseEntity.ok(product);
     }
+    @GetMapping("/get-by-id/{id}")
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+        Optional<Product> optionalProduct = productService.getProductById(id);
+
+        return optionalProduct
+                .map(product -> ResponseEntity.ok(product))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 }

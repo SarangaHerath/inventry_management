@@ -22,5 +22,4 @@ public class SalesInvoiceDTO {
     private Double cheque;
     private Double discount;
     private List<SalesInvoiceDetailsDTO> salesInvoiceDetails;
-
 }
