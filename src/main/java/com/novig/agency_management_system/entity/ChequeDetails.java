@@ -18,7 +18,7 @@ public class ChequeDetails {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "shop_id", nullable = false)
+    @JoinColumn(name = "shop_id")
     private Shop shop;
 
     @Column(name = "cheque_number")
