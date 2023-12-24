@@ -3,10 +3,8 @@ package com.novig.agency_management_system.service.serviceImpl;
 import com.novig.agency_management_system.dto.requestDto.ProductDto;
 import com.novig.agency_management_system.dto.requestDto.SalesInvoiceDTO;
 import com.novig.agency_management_system.dto.responseDto.ResponseDailyTotalSalesDto;
-import com.novig.agency_management_system.entity.Product;
-import com.novig.agency_management_system.entity.SalesInvoice;
-import com.novig.agency_management_system.entity.SalesInvoiceDetails;
-import com.novig.agency_management_system.entity.Shop;
+import com.novig.agency_management_system.entity.*;
+import com.novig.agency_management_system.repository.DeliveryRouteRepo;
 import com.novig.agency_management_system.repository.SalesInvoiceDetailsRepo;
 import com.novig.agency_management_system.repository.SalesInvoiceRepo;
 import com.novig.agency_management_system.repository.ShopRepo;
@@ -33,6 +31,9 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
     @Autowired
     private ShopRepo shopRepo;
 
+    @Autowired
+    private DeliveryRouteRepo deliveryRouteRepo;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -44,12 +45,18 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
             SalesInvoice salesInvoice = new SalesInvoice();
 
             // Retrieve the shop using the shop ID from the DTO
+            Long deliverRouteId = salesInvoiceDTO.getDeliveryRouteId();
+            DeliveryRoute deliveryroute = deliveryRouteRepo.findById(deliverRouteId)
+                    .orElseThrow(() -> new IllegalArgumentException("Delivery Route not found with ID: " + deliverRouteId));
+
+            // Retrieve the shop using the shop ID from the DTO
             Long shopId = salesInvoiceDTO.getShopId();
             Shop shop = shopRepo.findById(shopId)
                     .orElseThrow(() -> new IllegalArgumentException("Shop not found with ID: " + shopId));
 
             // Set the SalesInvoice properties
             salesInvoice.setShop(shop);
+            salesInvoice.setDeliveryRoute(deliveryroute);
             salesInvoice.setDate(salesInvoiceDTO.getDate());
             salesInvoice.setReturnValue(salesInvoiceDTO.getReturnValue());
             salesInvoice.setTotal(salesInvoiceDTO.getTotal());
@@ -73,8 +80,7 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
 
             // Set the SalesInvoiceDetails list to the SalesInvoice entity
             salesInvoice.setSalesInvoiceDetails(detailsList);
-
-            // Save the SalesInvoice entity, which will cascade to SalesInvoiceDetails due to CascadeType.ALL
+// Save the SalesInvoice entity, which will cascade to SalesInvoiceDetails due to CascadeType.ALL
             salesInvoiceRepo.save(salesInvoice);
         } catch (Exception e) {
             // Log the exception for debugging purposes

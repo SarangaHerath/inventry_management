@@ -92,5 +92,13 @@ public class ShopServiceImpl implements ShopService {
             throw new RuntimeException("Error getting shop by id", e);
         }
     }
+    @Override
+    public List<ShopDTO> getShopsByDeliveryRouteId(Long deliveryRouteId) {
+        List<Shop> shopList = shopRepo.findByDeliveryRouteId(deliveryRouteId);
+        return shopList.stream()
+                .map(Shop::toDTO)
+                .collect(Collectors.toList());
+    }
+
 }
 

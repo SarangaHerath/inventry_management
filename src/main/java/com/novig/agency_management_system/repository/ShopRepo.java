@@ -13,4 +13,6 @@ import java.util.List;
 public interface ShopRepo extends JpaRepository<Shop, Long> {
 
     List<Shop> findByDeliveryRoute(DeliveryRoute deliveryRoute);
+
+    List<Shop> findByDeliveryRouteId(Long deliveryRouteId);
 }
