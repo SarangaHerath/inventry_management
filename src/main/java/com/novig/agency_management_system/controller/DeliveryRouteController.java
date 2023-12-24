@@ -39,9 +39,13 @@ public class DeliveryRouteController {
 
     @PutMapping("/update")
     public ResponseEntity<DeliveryRoute> updateRoute(@RequestBody RequestDeliveryRouteDto requestDeliveryRouteDto) {
-        DeliveryRoute deliveryRoute1 = deliveryRouteService.updateShop(requestDeliveryRouteDto);
+        DeliveryRoute deliveryRoute1 = deliveryRouteService.updateRoute(requestDeliveryRouteDto);
         return ResponseEntity.ok(deliveryRoute1);
     }
-
+    @GetMapping("/getById/{id}")
+    public ResponseEntity<DeliveryRoute> getRouteById(@PathVariable Long id){
+        DeliveryRoute deliveryRoute = deliveryRouteService.getRouteById(id);
+       return ResponseEntity.ok(deliveryRoute);
+    }
 
 }

@@ -2,6 +2,8 @@ package com.novig.agency_management_system.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.novig.agency_management_system.dto.requestDto.RequestDeliveryRouteDto;
+import com.novig.agency_management_system.dto.responseDto.ShopDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,4 +34,26 @@ public class Shop {
 
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
+
+    public ShopDTO toDTO() {
+        ShopDTO dto = new ShopDTO();
+        dto.setShopId(this.shopId);
+        dto.setShopName(this.shopName);
+        dto.setAddress(this.address);
+        dto.setPhoneNumber(this.phoneNumber);
+
+        // Set deliveryRouteDetails using deliveryRoute details
+        if (this.deliveryRoute != null) {
+            dto.setDeliveryRoute(convertDeliveryRouteToDto(this.deliveryRoute));
+        }
+
+        return dto;
+    }
+    private RequestDeliveryRouteDto convertDeliveryRouteToDto(DeliveryRoute deliveryRoute) {
+        RequestDeliveryRouteDto routeDto = new RequestDeliveryRouteDto();
+        routeDto.setId(deliveryRoute.getId());
+        routeDto.setRouteName(deliveryRoute.getRouteName());
+        // Set other properties as needed in RequestDeliveryRouteDto
+        return routeDto;
+    }
 }

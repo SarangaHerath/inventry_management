@@ -34,8 +34,14 @@ public class SalesInvoice {
     @Column(name = "freeItems")
     private Double freeItems;
 
-    @Column(name = "paymentMethod")
-    private String paymentMethod;
+    @Column(name = "cash_payment")
+    private Double cash;
+
+    @Column(name = "credit_payment")
+    private Double credit;
+
+    @Column(name = "cheque_payment")
+    private Double cheque;
 
     @Column(name = "discount")
     private Double discount;
