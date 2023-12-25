@@ -61,4 +61,10 @@ public class ShopController {
         Shop shop = shopService.getShopById(id);
         return ResponseEntity.ok(shop);
     }
+    @GetMapping("/by-delivery-route/{deliveryRouteId}")
+    public ResponseEntity<List<ShopDTO>> getShopsByDeliveryRouteId(@PathVariable Long deliveryRouteId) {
+        List<ShopDTO> shopList = shopService.getShopsByDeliveryRouteId(deliveryRouteId);
+        return ResponseEntity.ok(shopList);
+    }
+
 }

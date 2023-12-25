@@ -18,5 +18,8 @@ public interface ShopService {
 
     Shop getShopById(Long shopId);
 
+
+    List<ShopDTO> getShopsByDeliveryRouteId(Long deliveryRouteId);
+
     ResponseEntity<String> deleteShop(Long id);
 }

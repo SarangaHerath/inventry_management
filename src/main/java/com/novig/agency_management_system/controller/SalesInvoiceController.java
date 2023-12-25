@@ -5,6 +5,7 @@ import com.novig.agency_management_system.dto.requestDto.SalesInvoiceDTO;
 import com.novig.agency_management_system.dto.responseDto.ResponseDailyTotalSalesDto;
 import com.novig.agency_management_system.entity.SalesInvoice;
 import com.novig.agency_management_system.entity.SalesInvoiceDetails;
+import com.novig.agency_management_system.entity.Shop;
 import com.novig.agency_management_system.service.SalesInvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,8 +55,7 @@ public class SalesInvoiceController {
     @GetMapping("/getDailySalesTotal")
     public ResponseEntity<ResponseDailyTotalSalesDto> getDailyTotal(@RequestBody RequestDailyTotalSalesDto requestDailyTotalSalesDto) {
         ResponseDailyTotalSalesDto responseDailyTotalSalesDto = salesInvoiceService.getDailyTotal(requestDailyTotalSalesDto.getDate());
-
         return ResponseEntity.ok(responseDailyTotalSalesDto);
-
     }
+
 }
