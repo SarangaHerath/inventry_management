@@ -140,4 +140,17 @@ public class StockOutServiceImpl implements StockOutService {
         List<StockOut> outOfStockDetails = stockOutRepo.findByProduct_ProductId(productId);
         return outOfStockDetails;
     }
+
+    @Override
+    public StockOut getByIdStockOut(Long id) {
+        try {
+            return stockOutRepo.findById(id)
+                    .orElseThrow(() -> new RuntimeException("StockOut not found with id: " + id));
+        } catch (Exception e) {
+            // Log the exception or handle it according to your application's needs
+            throw new RuntimeException("Error fetching StockOut by id: " + id, e);
+        }
     }
+
+
+}

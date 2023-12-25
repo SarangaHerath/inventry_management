@@ -44,11 +44,15 @@ public class StockOutController {
         StockOut stockOut = stockOutService.updateStockOut(requestStockOutDto);
         return ResponseEntity.ok(stockOut);
     }
+    @GetMapping("/getById/{id}")
+    public ResponseEntity<StockOut> getByIdStockOut(@PathVariable Long id) {
+        StockOut stockOut = stockOutService.getByIdStockOut(id);
+        return ResponseEntity.ok(stockOut);
+    }
 
     @GetMapping("/product-details/{productId}")
     public ResponseEntity<List<StockOut>> getOutOfStockProductDetails(@PathVariable Long productId) {
         List<StockOut> outOfStockDetails = stockOutService.getOutOfStockProductDetails(productId);
-        System.out.println("Hello");
         return ResponseEntity.ok(outOfStockDetails);
     }
 }

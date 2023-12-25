@@ -16,4 +16,6 @@ public interface StockOutService {
 
     StockOut addStockOut(RequestStockOutDto requestStockOutDto);
     List<StockOut> getOutOfStockProductDetails(Long productId);
+
+    StockOut getByIdStockOut(Long id);
 }
