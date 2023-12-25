@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,6 +37,14 @@ public class Shop {
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CreditPaymentDetails> creditPaymentDetailsList;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ChequeDetails> chequeDetailsList;
+
     public ShopDTO toDTO() {
         ShopDTO dto = new ShopDTO();
         dto.setShopId(this.shopId);
@@ -49,11 +59,26 @@ public class Shop {
 
         return dto;
     }
+
     private RequestDeliveryRouteDto convertDeliveryRouteToDto(DeliveryRoute deliveryRoute) {
         RequestDeliveryRouteDto routeDto = new RequestDeliveryRouteDto();
         routeDto.setId(deliveryRoute.getId());
         routeDto.setRouteName(deliveryRoute.getRouteName());
         // Set other properties as needed in RequestDeliveryRouteDto
         return routeDto;
+    }
+
+    // Add a method to delete the shop and its associated records
+    public void deleteShopAndAssociatedRecords() {
+        if (creditPaymentDetailsList != null) {
+            creditPaymentDetailsList.clear();
+        }
+
+        if (chequeDetailsList != null) {
+            chequeDetailsList.clear();
+        }
+
+        // Set deliveryRoute to null to avoid foreign key constraints
+        this.deliveryRoute = null;
     }
 }
