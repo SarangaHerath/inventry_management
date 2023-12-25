@@ -132,4 +132,12 @@ public class StockOutServiceImpl implements StockOutService {
             throw new IllegalArgumentException("Invalid Product ID");
         }
     }
-}
+    @Override
+    public List<StockOut> getOutOfStockProductDetails(Long productId) {
+        // Implement logic to retrieve out-of-stock product details based on productId
+        // For example, you can query the database for StockOut entries where product ID matches.
+
+        List<StockOut> outOfStockDetails = stockOutRepo.findByProduct_ProductId(productId);
+        return outOfStockDetails;
+    }
+    }

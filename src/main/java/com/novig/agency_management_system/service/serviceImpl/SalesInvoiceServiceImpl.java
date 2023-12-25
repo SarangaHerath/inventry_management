@@ -4,10 +4,7 @@ import com.novig.agency_management_system.dto.requestDto.ProductDto;
 import com.novig.agency_management_system.dto.requestDto.SalesInvoiceDTO;
 import com.novig.agency_management_system.dto.responseDto.ResponseDailyTotalSalesDto;
 import com.novig.agency_management_system.entity.*;
-import com.novig.agency_management_system.repository.DeliveryRouteRepo;
-import com.novig.agency_management_system.repository.SalesInvoiceDetailsRepo;
-import com.novig.agency_management_system.repository.SalesInvoiceRepo;
-import com.novig.agency_management_system.repository.ShopRepo;
+import com.novig.agency_management_system.repository.*;
 import com.novig.agency_management_system.service.SalesInvoiceService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -30,6 +27,9 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
 
     @Autowired
     private ShopRepo shopRepo;
+
+    @Autowired
+    private StockOutRepo stockOutRepo;
 
     @Autowired
     private DeliveryRouteRepo deliveryRouteRepo;
@@ -74,6 +74,9 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
                         details.setQuantity(detailsDto.getQuantity());
                         details.setUnitPrice(detailsDto.getUnitPrice());
                         details.setSalesInvoice(salesInvoice);
+
+                        updateStockQuantity(details.getProduct(), details.getQuantity());
+
                         return details;
                     })
                     .collect(Collectors.toList());
@@ -86,6 +89,32 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
             // Log the exception for debugging purposes
             // logger.error("Error creating sale", e);
             throw new RuntimeException("Error creating sale: " + e.getMessage(), e);
+        }
+    }
+    private void updateStockQuantity(Product product, int soldQuantity) {
+        try {
+            // Retrieve the current stockOut for the product
+            List<StockOut> stockOutList = stockOutRepo.findByProduct_ProductId(product.getProductId());
+
+            if (!stockOutList.isEmpty()) {
+                // Assuming there's only one StockOut entry for a product; handle appropriately if more are expected
+                StockOut stockOut = stockOutList.get(0);
+
+                // Update the stockOut quantity
+                int currentQuantity = stockOut.getQuantity();
+                if (currentQuantity >= soldQuantity) {
+                    stockOut.setQuantity(currentQuantity - soldQuantity);
+                    // Save the updated stockOut
+                    stockOutRepo.save(stockOut);
+                } else {
+                    throw new RuntimeException("Not enough stock available for product: " + product.getProductName());
+                }
+            } else {
+                throw new RuntimeException("Stock information not found for product: " + product.getProductName());
+            }
+        } catch (Exception e) {
+            // Handle the exception or log the error
+            throw new RuntimeException("Error updating stock quantity: " + e.getMessage(), e);
         }
     }
 
