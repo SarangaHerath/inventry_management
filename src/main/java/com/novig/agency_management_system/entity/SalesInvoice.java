@@ -57,5 +57,9 @@ public class SalesInvoice {
     @JsonIgnore
     private List<SalesInvoiceDetails> salesInvoiceDetails;
 
+    @OneToMany(mappedBy = "salesInvoice", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<FreeIssue> freeIssueList;
+
 
 }

@@ -22,4 +22,6 @@ public class RequestProductDto {
     private Double unitPrice;
 
     private int quantity;
+
+    private Long categoryId;
 }

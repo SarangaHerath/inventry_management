@@ -34,7 +34,7 @@ public class Shop {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "phone_number", nullable = false)
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @JsonIgnore

@@ -81,9 +81,31 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
                     })
                     .collect(Collectors.toList());
 
+
             // Set the SalesInvoiceDetails list to the SalesInvoice entity
             salesInvoice.setSalesInvoiceDetails(detailsList);
-// Save the SalesInvoice entity, which will cascade to SalesInvoiceDetails due to CascadeType.ALL
+
+            // Create a list of FreeIsuue entities
+            List<FreeIssue> freeIssueList = salesInvoiceDTO.getRequestFreeIssueDtos().stream()
+                    .map(detailsDto -> {
+                        FreeIssue details = new FreeIssue();
+                        details.setProduct(productDtoToEntity(detailsDto.getProduct()));
+                        details.setQuantity(detailsDto.getQuantity());
+                        details.setUnitPrice(detailsDto.getUnitPrice());
+                        details.setSalesInvoice(salesInvoice);
+
+                        updateStockQuantityFreeIsuue(details.getProduct(), details.getQuantity());
+
+
+
+                        return details;
+                    })
+                    .collect(Collectors.toList());
+
+
+            // Set the FreeIssue list to the FreeIsuue entity
+            salesInvoice.setFreeIssueList(freeIssueList);
+            // Save the SalesInvoice entity, which will cascade to SalesInvoiceDetails due to CascadeType.ALL
             salesInvoiceRepo.save(salesInvoice);
         } catch (Exception e) {
             // Log the exception for debugging purposes
@@ -198,4 +220,37 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
         // Set other properties as needed
         return product;
     }
+
+
+
+    private void updateStockQuantityFreeIsuue(Product product, int soldQuantity) {
+        try {
+            // Retrieve all stockOut entries for the product
+            List<StockOut> stockOutList = stockOutRepo.findByProduct_ProductId(product.getProductId());
+
+            if (!stockOutList.isEmpty()) {
+                // Iterate over each StockOut entry
+                for (StockOut stockOut : stockOutList) {
+                    // Update the stockOut quantity
+                    int currentQuantity = stockOut.getQuantity();
+                    if (currentQuantity >= soldQuantity) {
+                        stockOut.setQuantity(currentQuantity - soldQuantity);
+                        // Save the updated stockOut
+                        stockOutRepo.save(stockOut);
+                        return; // Exit the loop after updating one entry
+                    }
+                }
+
+                // If loop completes without updating, throw an exception
+                throw new RuntimeException("Not enough stock available for product: " + product.getProductName());
+            } else {
+                // If no StockOut entries found, throw an exception
+                throw new RuntimeException("Stock information not found for product: " + product.getProductName());
+            }
+        } catch (Exception e) {
+            // Handle the exception or log the error
+            throw new RuntimeException("Error updating stock quantity: " + e.getMessage(), e);
+        }
+    }
+
 }
