@@ -4,11 +4,14 @@ import com.novig.agency_management_system.dto.requestDto.RequestChequeDateRangeD
 import com.novig.agency_management_system.dto.requestDto.RequestChequeDto;
 import com.novig.agency_management_system.entity.ChequeDetails;
 import com.novig.agency_management_system.entity.Shop;
+import com.novig.agency_management_system.exception.CustomNotFoundException;
+import com.novig.agency_management_system.exception.DatabaseOperationException;
 import com.novig.agency_management_system.repository.ChequeDetailsRepo;
 import com.novig.agency_management_system.repository.ShopRepo;
 import com.novig.agency_management_system.service.ChequeDetailsService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,7 +54,7 @@ public class ChequeDetailsServiceImpl implements ChequeDetailsService {
 
     @Override
     public ChequeDetails updateCheque(RequestChequeDto requestChequeDto) {
-        Optional<ChequeDetails> optionalChequeDetails = chequeDetailsRepo.findById(requestChequeDto.getId());
+        Optional<ChequeDetails> optionalChequeDetails = chequeDetailsRepo.findById(requestChequeDto.getChequeId());
 
         if (optionalChequeDetails.isPresent()) {
             ChequeDetails chequeDetails = optionalChequeDetails.get();
@@ -63,7 +66,7 @@ public class ChequeDetailsServiceImpl implements ChequeDetailsService {
             return chequeDetails;
         } else {
             // Handle the case where the entity is not found (e.g., throw an exception or return null)
-            throw new EntityNotFoundException("ChequeDetails not found with ID: " + requestChequeDto.getId());
+            throw new EntityNotFoundException("ChequeDetails not found with ID: " + requestChequeDto.getChequeId());
         }
     }
 
@@ -73,6 +76,27 @@ public class ChequeDetailsServiceImpl implements ChequeDetailsService {
         List<ChequeDetails> chequeDetailsList = chequeDetailsRepo.findByReceivedDateBetween(requestChequeDateRangeDto.getFromDate(), requestChequeDateRangeDto.getToDate());
         return chequeDetailsList;
     }
+
+    @Override
+    public ChequeDetails getChequeById(Long id) {
+        try {
+            Optional<ChequeDetails> optionalChequeDetails = chequeDetailsRepo.findById(id);
+
+            if (optionalChequeDetails.isPresent()) {
+                return optionalChequeDetails.get();
+            } else {
+                // Handle the case where the ChequeDetails with the given ID is not found.
+                // You can throw an exception or return a default value based on your requirements.
+                throw new CustomNotFoundException("ChequeDetails with ID " + id + " not found");
+            }
+        } catch (Exception e) {
+            // Handle any other exceptions that might occur during the database operation.
+            // You might want to log the exception or rethrow a custom exception.
+            throw new DatabaseOperationException("Error fetching ChequeDetails with ID " + id, e);
+        }
+    }
+
+
 
 
 }

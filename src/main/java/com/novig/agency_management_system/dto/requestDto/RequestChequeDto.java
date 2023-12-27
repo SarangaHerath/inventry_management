@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 public class RequestChequeDto {
-    private Long id;
+    private Long chequeId;
     private Long shop_id;
     private String chequeNumber;
     private LocalDate receivedDate;

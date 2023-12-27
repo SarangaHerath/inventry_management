@@ -53,4 +53,10 @@ public class ChequeDetailsController {
         return ResponseEntity.ok(chequeDetailsList);
     }
 
+    @GetMapping("/getById/{id}")
+    public ResponseEntity<ChequeDetails> getChequeById(@PathVariable Long id){
+        ChequeDetails chequeDetails = chequeDetailsService.getChequeById(id);
+        return ResponseEntity.ok(chequeDetails);
+
+    }
 }

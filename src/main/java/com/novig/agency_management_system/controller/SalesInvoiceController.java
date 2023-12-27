@@ -7,15 +7,12 @@ import com.novig.agency_management_system.dto.responseDto.ResponseDailyTotalSale
 import com.novig.agency_management_system.dto.responseDto.TotalSaleDetailsDTO;
 import com.novig.agency_management_system.entity.SalesInvoice;
 import com.novig.agency_management_system.entity.SalesInvoiceDetails;
-import com.novig.agency_management_system.entity.Shop;
 import com.novig.agency_management_system.service.SalesInvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController

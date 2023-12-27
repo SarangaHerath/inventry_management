@@ -13,7 +13,9 @@ import com.novig.agency_management_system.repository.ShopRepo;
 
 import com.novig.agency_management_system.entity.*;
 import com.novig.agency_management_system.repository.*;
-
+import com.novig.agency_management_system.dto.responseDto.TotalSaleDetailsDTO;
+import com.novig.agency_management_system.entity.*;
+import com.novig.agency_management_system.repository.*;
 import com.novig.agency_management_system.service.SalesInvoiceService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -21,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -107,7 +108,6 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
                         updateStockQuantityFreeIsuue(details.getProduct(), details.getQuantity());
 
 
-
                         return details;
                     })
                     .collect(Collectors.toList());
@@ -123,6 +123,7 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
             throw new RuntimeException("Error creating sale: " + e.getMessage(), e);
         }
     }
+
     private void updateStockQuantity(Product product, int soldQuantity) {
         try {
             // Retrieve the current stockOut for the product
@@ -252,7 +253,6 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
         // Set other properties as needed
         return product;
     }
-
 
 
     private void updateStockQuantityFreeIsuue(Product product, int soldQuantity) {
