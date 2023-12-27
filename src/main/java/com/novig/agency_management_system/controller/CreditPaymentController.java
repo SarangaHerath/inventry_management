@@ -56,4 +56,9 @@ public class CreditPaymentController {
         CreditPaymentDetails creditPaymentDetails = creditPaymentService.getCreditDetailsById(id);
         return ResponseEntity.ok(creditPaymentDetails);
     }
+    @PutMapping("/updateCredit")
+    public ResponseEntity<CreditPaymentDetails> updateCreditPay(@RequestBody RequestCreditPaymentDto requestCreditPaymentDto){
+        CreditPaymentDetails creditPaymentDetails = creditPaymentService.updateCreditPay(requestCreditPaymentDto);
+        return ResponseEntity.ok(creditPaymentDetails);
+    }
 }

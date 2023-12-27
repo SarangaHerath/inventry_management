@@ -2,6 +2,7 @@ package com.novig.agency_management_system.service.serviceImpl;
 
 import com.novig.agency_management_system.dto.requestDto.DateRangeRequestDto;
 import com.novig.agency_management_system.dto.requestDto.ProductDto;
+import com.novig.agency_management_system.dto.requestDto.RequestFreeIssueDto;
 import com.novig.agency_management_system.dto.requestDto.SalesInvoiceDTO;
 import com.novig.agency_management_system.dto.responseDto.ResponseDailyTotalSalesDto;
 import com.novig.agency_management_system.dto.responseDto.TotalSaleDetailsDTO;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +38,9 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
     @Autowired
     private DeliveryRouteRepo deliveryRouteRepo;
 
+    @Autowired
+    private CreditPaymentRepo creditPaymentRepo;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -45,7 +50,6 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
         try {
             // Create a new SalesInvoice entity
             SalesInvoice salesInvoice = new SalesInvoice();
-
             // Retrieve the shop using the shop ID from the DTO
             Long deliverRouteId = salesInvoiceDTO.getDeliveryRouteId();
             DeliveryRoute deliveryroute = deliveryRouteRepo.findById(deliverRouteId)
@@ -68,6 +72,7 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
             salesInvoice.setCheque(salesInvoiceDTO.getCheque());
             salesInvoice.setDiscount(salesInvoiceDTO.getDiscount());
 
+
             // Create a list of SalesInvoiceDetails entities
             List<SalesInvoiceDetails> detailsList = salesInvoiceDTO.getSalesInvoiceDetails().stream()
                     .map(detailsDto -> {
@@ -87,22 +92,35 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
             // Set the SalesInvoiceDetails list to the SalesInvoice entity
             salesInvoice.setSalesInvoiceDetails(detailsList);
 
-            // Create a list of FreeIsuue entities
-            List<FreeIssue> freeIssueList = salesInvoiceDTO.getRequestFreeIssueDtos().stream()
-                    .map(detailsDto -> {
-                        FreeIssue details = new FreeIssue();
-                        details.setProduct(productDtoToEntity(detailsDto.getProduct()));
-                        details.setQuantity(detailsDto.getQuantity());
-                        details.setUnitPrice(detailsDto.getUnitPrice());
-                        details.setSalesInvoice(salesInvoice);
+            // Create a list of FreeIsuue entities if applicable
+            List<FreeIssue> freeIssueList = new ArrayList<>();
 
-                        updateStockQuantityFreeIsuue(details.getProduct(), details.getQuantity());
+            List<RequestFreeIssueDto> requestFreeIssueDtos = salesInvoiceDTO.getRequestFreeIssueDtos();
+            if (requestFreeIssueDtos != null && !requestFreeIssueDtos.isEmpty()) {
+                freeIssueList = requestFreeIssueDtos.stream()
+                        .map(detailsDto -> {
+                            FreeIssue details = new FreeIssue();
+                            details.setProduct(productDtoToEntity(detailsDto.getProduct()));
+                            details.setQuantity(detailsDto.getQuantity());
+                            details.setUnitPrice(detailsDto.getUnitPrice());
+                            details.setSalesInvoice(salesInvoice);
+
+                            updateStockQuantityFreeIsuue(details.getProduct(), details.getQuantity());
+
+                            return details;
+                        })
+                        .collect(Collectors.toList());
+            }
 
 
-                        return details;
-                    })
-                    .collect(Collectors.toList());
-
+            // Set Data to credit table
+            CreditPaymentDetails creditPaymentDetails = new CreditPaymentDetails();
+            creditPaymentDetails.setBillDate(salesInvoiceDTO.getDate());
+            creditPaymentDetails.setCreditAmount(salesInvoiceDTO.getCredit());
+            creditPaymentDetails.setShop(shop);
+            creditPaymentDetails.setPaidAmount(0.0);
+            creditPaymentDetails.setSalesInvoice(salesInvoice);
+            creditPaymentRepo.save(creditPaymentDetails);
 
             // Set the FreeIssue list to the FreeIsuue entity
             salesInvoice.setFreeIssueList(freeIssueList);
