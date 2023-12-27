@@ -7,6 +7,7 @@ import com.novig.agency_management_system.dto.responseDto.ResponseDailyTotalSale
 import com.novig.agency_management_system.dto.responseDto.TotalSaleDetailsDTO;
 import com.novig.agency_management_system.entity.SalesInvoice;
 import com.novig.agency_management_system.entity.SalesInvoiceDetails;
+import com.novig.agency_management_system.entity.Shop;
 import com.novig.agency_management_system.service.SalesInvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -58,9 +59,9 @@ public class SalesInvoiceController {
     @GetMapping("/getDailySalesTotal")
     public ResponseEntity<ResponseDailyTotalSalesDto> getDailyTotal(@RequestBody RequestDailyTotalSalesDto requestDailyTotalSalesDto) {
         ResponseDailyTotalSalesDto responseDailyTotalSalesDto = salesInvoiceService.getDailyTotal(requestDailyTotalSalesDto.getDate());
-
         return ResponseEntity.ok(responseDailyTotalSalesDto);
     }
+<<<<<<< HEAD
     
 
     @GetMapping("/totalBySelectedDateRange")
@@ -68,5 +69,7 @@ public class SalesInvoiceController {
         TotalSaleDetailsDTO totalSaleDetailsDateRange = salesInvoiceService.calTotalSaleDetailsByDateRange(dateRangeRequestDto);
         return ResponseEntity.ok(totalSaleDetailsDateRange);
     }
+=======
+>>>>>>> 1e54ad22f71a3cbb2d8ce58bf68dc7f1be566625
 
 }

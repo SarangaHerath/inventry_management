@@ -2,7 +2,9 @@ package com.novig.agency_management_system.service.serviceImpl;
 
 import com.novig.agency_management_system.dto.requestDto.ProductDto;
 import com.novig.agency_management_system.dto.requestDto.RequestProductDto;
+import com.novig.agency_management_system.entity.Category;
 import com.novig.agency_management_system.entity.Product;
+import com.novig.agency_management_system.repository.CategoryRepo;
 import com.novig.agency_management_system.repository.ProductRepo;
 import com.novig.agency_management_system.service.ProductService;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,16 +20,22 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepo productRepo;
 
+    @Autowired
+    private CategoryRepo categoryRepo;
+
     @Override
     public Product addProduct(RequestProductDto requestProductDto) {
         try {
+            Category category = categoryRepo.findById(requestProductDto.getCategoryId()).get();
             Product product = new Product(
                     requestProductDto.getProductId(),
                     requestProductDto.getProductName(),
                     requestProductDto.getWeight(),
                     requestProductDto.getDate(),
                     requestProductDto.getUnitPrice(),
-                    requestProductDto.getQuantity()
+                    requestProductDto.getQuantity(),
+                    category
+
             );
             productRepo.save(product);
             return product;

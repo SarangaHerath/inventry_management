@@ -4,11 +4,16 @@ import com.novig.agency_management_system.dto.requestDto.DateRangeRequestDto;
 import com.novig.agency_management_system.dto.requestDto.ProductDto;
 import com.novig.agency_management_system.dto.requestDto.SalesInvoiceDTO;
 import com.novig.agency_management_system.dto.responseDto.ResponseDailyTotalSalesDto;
+<<<<<<< HEAD
 import com.novig.agency_management_system.dto.responseDto.TotalSaleDetailsDTO;
 import com.novig.agency_management_system.entity.*;
 import com.novig.agency_management_system.repository.SalesInvoiceDetailsRepo;
 import com.novig.agency_management_system.repository.SalesInvoiceRepo;
 import com.novig.agency_management_system.repository.ShopRepo;
+=======
+import com.novig.agency_management_system.entity.*;
+import com.novig.agency_management_system.repository.*;
+>>>>>>> 1e54ad22f71a3cbb2d8ce58bf68dc7f1be566625
 import com.novig.agency_management_system.service.SalesInvoiceService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -33,6 +38,12 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
     @Autowired
     private ShopRepo shopRepo;
 
+    @Autowired
+    private StockOutRepo stockOutRepo;
+
+    @Autowired
+    private DeliveryRouteRepo deliveryRouteRepo;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -44,12 +55,18 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
             SalesInvoice salesInvoice = new SalesInvoice();
 
             // Retrieve the shop using the shop ID from the DTO
+            Long deliverRouteId = salesInvoiceDTO.getDeliveryRouteId();
+            DeliveryRoute deliveryroute = deliveryRouteRepo.findById(deliverRouteId)
+                    .orElseThrow(() -> new IllegalArgumentException("Delivery Route not found with ID: " + deliverRouteId));
+
+            // Retrieve the shop using the shop ID from the DTO
             Long shopId = salesInvoiceDTO.getShopId();
             Shop shop = shopRepo.findById(shopId)
                     .orElseThrow(() -> new IllegalArgumentException("Shop not found with ID: " + shopId));
 
             // Set the SalesInvoice properties
             salesInvoice.setShop(shop);
+            salesInvoice.setDeliveryRoute(deliveryroute);
             salesInvoice.setDate(salesInvoiceDTO.getDate());
             salesInvoice.setReturnValue(salesInvoiceDTO.getReturnValue());
             salesInvoice.setTotal(salesInvoiceDTO.getTotal());
@@ -67,19 +84,69 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
                         details.setQuantity(detailsDto.getQuantity());
                         details.setUnitPrice(detailsDto.getUnitPrice());
                         details.setSalesInvoice(salesInvoice);
+
+                        updateStockQuantity(details.getProduct(), details.getQuantity());
+
                         return details;
                     })
                     .collect(Collectors.toList());
 
+
             // Set the SalesInvoiceDetails list to the SalesInvoice entity
             salesInvoice.setSalesInvoiceDetails(detailsList);
 
+            // Create a list of FreeIsuue entities
+            List<FreeIssue> freeIssueList = salesInvoiceDTO.getRequestFreeIssueDtos().stream()
+                    .map(detailsDto -> {
+                        FreeIssue details = new FreeIssue();
+                        details.setProduct(productDtoToEntity(detailsDto.getProduct()));
+                        details.setQuantity(detailsDto.getQuantity());
+                        details.setUnitPrice(detailsDto.getUnitPrice());
+                        details.setSalesInvoice(salesInvoice);
+
+                        updateStockQuantityFreeIsuue(details.getProduct(), details.getQuantity());
+
+
+
+                        return details;
+                    })
+                    .collect(Collectors.toList());
+
+
+            // Set the FreeIssue list to the FreeIsuue entity
+            salesInvoice.setFreeIssueList(freeIssueList);
             // Save the SalesInvoice entity, which will cascade to SalesInvoiceDetails due to CascadeType.ALL
             salesInvoiceRepo.save(salesInvoice);
         } catch (Exception e) {
             // Log the exception for debugging purposes
             // logger.error("Error creating sale", e);
             throw new RuntimeException("Error creating sale: " + e.getMessage(), e);
+        }
+    }
+    private void updateStockQuantity(Product product, int soldQuantity) {
+        try {
+            // Retrieve the current stockOut for the product
+            List<StockOut> stockOutList = stockOutRepo.findByProduct_ProductId(product.getProductId());
+
+            if (!stockOutList.isEmpty()) {
+                // Assuming there's only one StockOut entry for a product; handle appropriately if more are expected
+                StockOut stockOut = stockOutList.get(0);
+
+                // Update the stockOut quantity
+                int currentQuantity = stockOut.getQuantity();
+                if (currentQuantity >= soldQuantity) {
+                    stockOut.setQuantity(currentQuantity - soldQuantity);
+                    // Save the updated stockOut
+                    stockOutRepo.save(stockOut);
+                } else {
+                    throw new RuntimeException("Not enough stock available for product: " + product.getProductName());
+                }
+            } else {
+                throw new RuntimeException("Stock information not found for product: " + product.getProductName());
+            }
+        } catch (Exception e) {
+            // Handle the exception or log the error
+            throw new RuntimeException("Error updating stock quantity: " + e.getMessage(), e);
         }
     }
 
@@ -185,4 +252,37 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
         // Set other properties as needed
         return product;
     }
+
+
+
+    private void updateStockQuantityFreeIsuue(Product product, int soldQuantity) {
+        try {
+            // Retrieve all stockOut entries for the product
+            List<StockOut> stockOutList = stockOutRepo.findByProduct_ProductId(product.getProductId());
+
+            if (!stockOutList.isEmpty()) {
+                // Iterate over each StockOut entry
+                for (StockOut stockOut : stockOutList) {
+                    // Update the stockOut quantity
+                    int currentQuantity = stockOut.getQuantity();
+                    if (currentQuantity >= soldQuantity) {
+                        stockOut.setQuantity(currentQuantity - soldQuantity);
+                        // Save the updated stockOut
+                        stockOutRepo.save(stockOut);
+                        return; // Exit the loop after updating one entry
+                    }
+                }
+
+                // If loop completes without updating, throw an exception
+                throw new RuntimeException("Not enough stock available for product: " + product.getProductName());
+            } else {
+                // If no StockOut entries found, throw an exception
+                throw new RuntimeException("Stock information not found for product: " + product.getProductName());
+            }
+        } catch (Exception e) {
+            // Handle the exception or log the error
+            throw new RuntimeException("Error updating stock quantity: " + e.getMessage(), e);
+        }
+    }
+
 }

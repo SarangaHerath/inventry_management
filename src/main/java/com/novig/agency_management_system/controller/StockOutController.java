@@ -1,6 +1,7 @@
 package com.novig.agency_management_system.controller;
 
 import com.novig.agency_management_system.dto.requestDto.RequestStockOutDto;
+import com.novig.agency_management_system.entity.Product;
 import com.novig.agency_management_system.entity.StockOut;
 import com.novig.agency_management_system.service.StockOutService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -42,5 +44,15 @@ public class StockOutController {
         StockOut stockOut = stockOutService.updateStockOut(requestStockOutDto);
         return ResponseEntity.ok(stockOut);
     }
+    @GetMapping("/getById/{id}")
+    public ResponseEntity<StockOut> getByIdStockOut(@PathVariable Long id) {
+        StockOut stockOut = stockOutService.getByIdStockOut(id);
+        return ResponseEntity.ok(stockOut);
+    }
 
+    @GetMapping("/product-details/{productId}")
+    public ResponseEntity<List<StockOut>> getOutOfStockProductDetails(@PathVariable Long productId) {
+        List<StockOut> outOfStockDetails = stockOutService.getOutOfStockProductDetails(productId);
+        return ResponseEntity.ok(outOfStockDetails);
+    }
 }

@@ -20,7 +20,7 @@ public class CreditPaymentDetails {
     private Long creditId;
 
     @ManyToOne
-    @JoinColumn(name = "shop_id", nullable = false)
+    @JoinColumn(name = "shop_id")
     private Shop shop;
 
     @Column(name = "credit_amount")

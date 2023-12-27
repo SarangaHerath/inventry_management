@@ -25,6 +25,8 @@ public class SalesInvoiceDetails {
     private Product product;
 
     private int quantity;
+
+    @Column(name = "unit_price")
     private Double unitPrice;
 
 

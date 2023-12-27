@@ -10,22 +10,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class FreeIssue {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "freeIssue_id")
-    private Long freeIssueId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "free_issue_id")
+    private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "shop_id", nullable = false)
-    private Shop shop;
+    @JoinColumn(name = "sale_invoice_id")
+    private SalesInvoice salesInvoice;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "product_id")
     private Product product;
 
-    @Column(name = "quantity", nullable = false)
     private int quantity;
 
-    @Column(name = "free_issue_amount")
-    private double freeIssueAmount;
+    @Column(name = "unit_price")
+    private Double unitPrice;
+
 }

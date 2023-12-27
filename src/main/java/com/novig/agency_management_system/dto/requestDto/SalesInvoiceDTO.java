@@ -13,6 +13,7 @@ import java.util.List;
 public class SalesInvoiceDTO {
     private Long id;
     private Long shopId;
+    private Long deliveryRouteId;
     private Double total;
     private Double returnValue;
     private LocalDate date;
@@ -22,4 +23,5 @@ public class SalesInvoiceDTO {
     private Double cheque;
     private Double discount;
     private List<SalesInvoiceDetailsDTO> salesInvoiceDetails;
+    private List<RequestFreeIssueDto> requestFreeIssueDtos;
 }

@@ -28,6 +28,10 @@ public class SalesInvoice {
     @JoinColumn(name = "shop_id")
     private Shop shop;
 
+    @ManyToOne
+    @JoinColumn(name = "delivery_route_id")
+    private DeliveryRoute deliveryRoute;
+
     @Column(name = "return_value")
     private Double returnValue;
 
@@ -52,6 +56,10 @@ public class SalesInvoice {
     @OneToMany(mappedBy = "salesInvoice", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<SalesInvoiceDetails> salesInvoiceDetails;
+
+    @OneToMany(mappedBy = "salesInvoice", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<FreeIssue> freeIssueList;
 
 
 }

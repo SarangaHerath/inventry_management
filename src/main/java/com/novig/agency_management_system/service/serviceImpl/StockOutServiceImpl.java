@@ -132,4 +132,25 @@ public class StockOutServiceImpl implements StockOutService {
             throw new IllegalArgumentException("Invalid Product ID");
         }
     }
+    @Override
+    public List<StockOut> getOutOfStockProductDetails(Long productId) {
+        // Implement logic to retrieve out-of-stock product details based on productId
+        // For example, you can query the database for StockOut entries where product ID matches.
+
+        List<StockOut> outOfStockDetails = stockOutRepo.findByProduct_ProductId(productId);
+        return outOfStockDetails;
+    }
+
+    @Override
+    public StockOut getByIdStockOut(Long id) {
+        try {
+            return stockOutRepo.findById(id)
+                    .orElseThrow(() -> new RuntimeException("StockOut not found with id: " + id));
+        } catch (Exception e) {
+            // Log the exception or handle it according to your application's needs
+            throw new RuntimeException("Error fetching StockOut by id: " + id, e);
+        }
+    }
+
+
 }
