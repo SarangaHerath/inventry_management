@@ -4,16 +4,16 @@ import com.novig.agency_management_system.dto.requestDto.DateRangeRequestDto;
 import com.novig.agency_management_system.dto.requestDto.ProductDto;
 import com.novig.agency_management_system.dto.requestDto.SalesInvoiceDTO;
 import com.novig.agency_management_system.dto.responseDto.ResponseDailyTotalSalesDto;
-<<<<<<< HEAD
+
 import com.novig.agency_management_system.dto.responseDto.TotalSaleDetailsDTO;
 import com.novig.agency_management_system.entity.*;
 import com.novig.agency_management_system.repository.SalesInvoiceDetailsRepo;
 import com.novig.agency_management_system.repository.SalesInvoiceRepo;
 import com.novig.agency_management_system.repository.ShopRepo;
-=======
+
 import com.novig.agency_management_system.entity.*;
 import com.novig.agency_management_system.repository.*;
->>>>>>> 1e54ad22f71a3cbb2d8ce58bf68dc7f1be566625
+
 import com.novig.agency_management_system.service.SalesInvoiceService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

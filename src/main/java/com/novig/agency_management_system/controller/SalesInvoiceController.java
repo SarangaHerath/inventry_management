@@ -61,15 +61,12 @@ public class SalesInvoiceController {
         ResponseDailyTotalSalesDto responseDailyTotalSalesDto = salesInvoiceService.getDailyTotal(requestDailyTotalSalesDto.getDate());
         return ResponseEntity.ok(responseDailyTotalSalesDto);
     }
-<<<<<<< HEAD
-    
+
 
     @GetMapping("/totalBySelectedDateRange")
     public ResponseEntity<TotalSaleDetailsDTO> getTotalSalesByDateRange(@RequestBody DateRangeRequestDto dateRangeRequestDto) {
         TotalSaleDetailsDTO totalSaleDetailsDateRange = salesInvoiceService.calTotalSaleDetailsByDateRange(dateRangeRequestDto);
         return ResponseEntity.ok(totalSaleDetailsDateRange);
     }
-=======
->>>>>>> 1e54ad22f71a3cbb2d8ce58bf68dc7f1be566625
 
 }
