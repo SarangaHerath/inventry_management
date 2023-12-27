@@ -1,16 +1,20 @@
 package com.novig.agency_management_system.controller;
 
+import com.novig.agency_management_system.dto.requestDto.DateRangeRequestDto;
 import com.novig.agency_management_system.dto.requestDto.RequestDailyTotalSalesDto;
 import com.novig.agency_management_system.dto.requestDto.SalesInvoiceDTO;
 import com.novig.agency_management_system.dto.responseDto.ResponseDailyTotalSalesDto;
+import com.novig.agency_management_system.dto.responseDto.TotalSaleDetailsDTO;
 import com.novig.agency_management_system.entity.SalesInvoice;
 import com.novig.agency_management_system.entity.SalesInvoiceDetails;
 import com.novig.agency_management_system.service.SalesInvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -56,6 +60,13 @@ public class SalesInvoiceController {
         ResponseDailyTotalSalesDto responseDailyTotalSalesDto = salesInvoiceService.getDailyTotal(requestDailyTotalSalesDto.getDate());
 
         return ResponseEntity.ok(responseDailyTotalSalesDto);
-
     }
+    
+
+    @GetMapping("/totalBySelectedDateRange")
+    public ResponseEntity<TotalSaleDetailsDTO> getTotalSalesByDateRange(@RequestBody DateRangeRequestDto dateRangeRequestDto) {
+        TotalSaleDetailsDTO totalSaleDetailsDateRange = salesInvoiceService.calTotalSaleDetailsByDateRange(dateRangeRequestDto);
+        return ResponseEntity.ok(totalSaleDetailsDateRange);
+    }
+
 }

@@ -1,12 +1,11 @@
 package com.novig.agency_management_system.service.serviceImpl;
 
+import com.novig.agency_management_system.dto.requestDto.DateRangeRequestDto;
 import com.novig.agency_management_system.dto.requestDto.ProductDto;
 import com.novig.agency_management_system.dto.requestDto.SalesInvoiceDTO;
 import com.novig.agency_management_system.dto.responseDto.ResponseDailyTotalSalesDto;
-import com.novig.agency_management_system.entity.Product;
-import com.novig.agency_management_system.entity.SalesInvoice;
-import com.novig.agency_management_system.entity.SalesInvoiceDetails;
-import com.novig.agency_management_system.entity.Shop;
+import com.novig.agency_management_system.dto.responseDto.TotalSaleDetailsDTO;
+import com.novig.agency_management_system.entity.*;
 import com.novig.agency_management_system.repository.SalesInvoiceDetailsRepo;
 import com.novig.agency_management_system.repository.SalesInvoiceRepo;
 import com.novig.agency_management_system.repository.ShopRepo;
@@ -17,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -120,6 +120,28 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
         // Create and return the response DTO
         return new ResponseDailyTotalSalesDto(chequeTotal, creditTotal, cashTotal, total);
     }
+
+    @Override
+    public TotalSaleDetailsDTO calTotalSaleDetailsByDateRange(DateRangeRequestDto dateRangeRequest) {
+
+        LocalDate startDate = dateRangeRequest.getStartDate();
+        LocalDate endDate = dateRangeRequest.getEndDate();
+        long rowCount = salesInvoiceRepo.countByDateRange(startDate, endDate);
+        Double totalSale = salesInvoiceRepo.getTotalSaleCountByDateRange(startDate, endDate);
+        Double totalDiscount = salesInvoiceRepo.getTotalDiscountCountByDateRange(startDate, endDate);
+        Double totalFreeItems = salesInvoiceRepo.getTotalFreeItemsCountByDateRange(startDate, endDate);
+        Double totalReturnValues = salesInvoiceRepo.getTotalReturnValuesCountByDateRange(startDate, endDate);
+
+        TotalSaleDetailsDTO totalSaleDetailsDTO = new TotalSaleDetailsDTO();
+        totalSaleDetailsDTO.setRowCount(rowCount);
+        totalSaleDetailsDTO.setTotalSale(totalSale);
+        totalSaleDetailsDTO.setTotalDiscount(totalDiscount);
+        totalSaleDetailsDTO.setTotalReturnValues(totalReturnValues);
+        totalSaleDetailsDTO.setTotalFreeItems(totalFreeItems);
+
+        return totalSaleDetailsDTO;
+    }
+
 
     private Double parseDouble(String value) {
         try {
