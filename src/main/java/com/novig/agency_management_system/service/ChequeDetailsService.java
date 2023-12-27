@@ -16,4 +16,6 @@ public interface ChequeDetailsService {
     ChequeDetails updateCheque(RequestChequeDto requestChequeDto);
 
     List<ChequeDetails> getChequeDetailsByDateRange(RequestChequeDateRangeDto requestChequeDateRangeDto);
+
+    ChequeDetails getChequeById(Long id);
 }

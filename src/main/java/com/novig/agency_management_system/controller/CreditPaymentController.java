@@ -51,4 +51,9 @@ public class CreditPaymentController {
         List<CreditPaymentDetails> creditPaymentDetailsList = creditPaymentService.getCreditDetailsByDateRange(requestChequeDateRangeDto);
         return ResponseEntity.ok(creditPaymentDetailsList);
     }
+    @GetMapping("/getById/{id}")
+    public ResponseEntity<CreditPaymentDetails> getCreditDetailsById(@PathVariable Long id){
+        CreditPaymentDetails creditPaymentDetails = creditPaymentService.getCreditDetailsById(id);
+        return ResponseEntity.ok(creditPaymentDetails);
+    }
 }

@@ -16,4 +16,6 @@ public interface CreditPaymentService {
     CreditPaymentDetails updateCreditPayment(RequestCreditPaymentDto requestCreditPaymentDto);
 
     List<CreditPaymentDetails> getCreditDetailsByDateRange(RequestChequeDateRangeDto requestChequeDateRangeDto);
+
+    CreditPaymentDetails getCreditDetailsById(Long id);
 }
