@@ -80,4 +80,10 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
+    @Override
+    public Category getCategoryById(Long id) {
+        Category category = categoryRepo.findById(id).get();
+        return category;
+    }
+
 }

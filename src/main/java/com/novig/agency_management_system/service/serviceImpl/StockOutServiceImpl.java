@@ -1,6 +1,7 @@
 package com.novig.agency_management_system.service.serviceImpl;
 
 import com.novig.agency_management_system.dto.requestDto.RequestStockOutDto;
+import com.novig.agency_management_system.dto.responseDto.CategoryWiseProductDto;
 import com.novig.agency_management_system.entity.Product;
 import com.novig.agency_management_system.entity.StockOut;
 import com.novig.agency_management_system.entity.Vehicle;
@@ -12,10 +13,11 @@ import com.novig.agency_management_system.service.StockOutService;
 import com.novig.agency_management_system.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class StockOutServiceImpl implements StockOutService {
@@ -152,15 +154,23 @@ public class StockOutServiceImpl implements StockOutService {
             throw new RuntimeException("Error fetching StockOut by id: " + id, e);
         }
     }
-    @Override
-    public List<StockOut> getOutOfStockProductsByCategoryId(Long categoryId) {
-        // Retrieve out-of-stock product details based on category
-        List<StockOut> outOfStockDetails = stockOutRepo.findByProduct_Category_CategoryId(categoryId);
 
-        // Filter out entries where the product quantity is greater than 0
-        return outOfStockDetails.stream()
-                .filter(stockOut -> stockOut.getProduct().getQuantity() == 0)
-                .collect(Collectors.toList());
+    @Override
+    @Transactional
+    public List<CategoryWiseProductDto> getProductsByCategory(Long categoryId) {
+        List<StockOut> stockOutList = stockOutRepo.findByProduct_Category_CategoryId(categoryId);
+        List<CategoryWiseProductDto> result = new ArrayList<>();
+
+        for (StockOut stockOut : stockOutList) {
+            CategoryWiseProductDto dto = new CategoryWiseProductDto();
+            dto.setProductId(stockOut.getProduct().getProductId());
+            dto.setProductName(stockOut.getProduct().getProductName());
+            dto.setQuantity(stockOut.getQuantity());
+            dto.setUnitPrice(stockOut.getProduct().getUnitPrice());
+            dto.setWeight(stockOut.getProduct().getWeight());
+            result.add(dto);
+        }
+        return result;
     }
 
 }
