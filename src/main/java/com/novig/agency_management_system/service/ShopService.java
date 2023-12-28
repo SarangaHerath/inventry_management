@@ -16,7 +16,7 @@ public interface ShopService {
 
     Shop updateShop(RequestShopDto requestShopDto);
 
-    Shop getShopById(Long shopId);
+    ShopDTO getShopById(Long shopId);
 
 
     List<ShopDTO> getShopsByDeliveryRouteId(Long deliveryRouteId);

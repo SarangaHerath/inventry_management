@@ -24,9 +24,10 @@ public class Shop {
     private Long shopId;
 
     @JsonIgnore
-    @ManyToOne(optional = true)
+    @ManyToOne(optional = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "delivery_route_id", nullable = true)
     private DeliveryRoute deliveryRoute;
+
 
     @Column(name = "shop_name", nullable = false)
     private String shopName;

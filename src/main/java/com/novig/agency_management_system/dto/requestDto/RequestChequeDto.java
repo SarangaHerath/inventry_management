@@ -16,5 +16,6 @@ public class RequestChequeDto {
     private LocalDate receivedDate;
     private LocalDate bankDate;
     private Double amount;
+    private String remark;
 }
 

@@ -57,8 +57,7 @@ public class CreditPaymentController {
         return ResponseEntity.ok(creditPaymentDetails);
     }
     @PutMapping("/updateCredit")
-    public ResponseEntity<CreditPaymentDetails> updateCreditPay(@RequestBody RequestCreditPaymentDto requestCreditPaymentDto){
-        CreditPaymentDetails creditPaymentDetails = creditPaymentService.updateCreditPay(requestCreditPaymentDto);
-        return ResponseEntity.ok(creditPaymentDetails);
+    public ResponseEntity<?> updateCreditPay(@RequestBody RequestCreditPaymentDto requestCreditPaymentDto){
+        return creditPaymentService.updateCreditPay(requestCreditPaymentDto);
     }
 }

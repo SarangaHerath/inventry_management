@@ -27,16 +27,13 @@ public class ProductServiceImpl implements ProductService {
     public Product addProduct(RequestProductDto requestProductDto) {
         try {
             Category category = categoryRepo.findById(requestProductDto.getCategoryId()).get();
-            Product product = new Product(
-                    requestProductDto.getProductId(),
-                    requestProductDto.getProductName(),
-                    requestProductDto.getWeight(),
-                    requestProductDto.getDate(),
-                    requestProductDto.getUnitPrice(),
-                    requestProductDto.getQuantity(),
-                    category
-
-            );
+            Product product = new Product();
+            product.setProductName(requestProductDto.getProductName());
+            product.setQuantity(requestProductDto.getQuantity());
+            product.setDate(requestProductDto.getDate());
+            product.setWeight(requestProductDto.getWeight());
+            product.setUnitPrice(requestProductDto.getUnitPrice());
+            product.setCategory(category);
             productRepo.save(product);
             return product;
         } catch (Exception e) {

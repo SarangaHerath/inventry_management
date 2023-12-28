@@ -3,6 +3,7 @@ package com.novig.agency_management_system.service;
 import com.novig.agency_management_system.dto.requestDto.RequestChequeDateRangeDto;
 import com.novig.agency_management_system.dto.requestDto.RequestCreditPaymentDto;
 import com.novig.agency_management_system.entity.CreditPaymentDetails;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -19,5 +20,5 @@ public interface CreditPaymentService {
 
     CreditPaymentDetails getCreditDetailsById(Long id);
 
-    CreditPaymentDetails updateCreditPay(RequestCreditPaymentDto requestCreditPaymentDto);
+    ResponseEntity<?> updateCreditPay(RequestCreditPaymentDto requestCreditPaymentDto);
 }

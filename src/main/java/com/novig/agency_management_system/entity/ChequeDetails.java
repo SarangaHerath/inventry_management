@@ -32,4 +32,7 @@ public class ChequeDetails {
 
     @Column(name = "amount")
     private Double amount;
+
+    @Column(name = "remark")
+    private String remark;
 }

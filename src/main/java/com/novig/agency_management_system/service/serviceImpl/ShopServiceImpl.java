@@ -101,14 +101,15 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public Shop getShopById(Long shopId) {
-        try {
-            return shopRepo.findById(shopId)
-                    .orElseThrow(() -> new EntityNotFoundException("Shop not found with id: " + shopId));
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error getting shop by id", e);
-        }
+    public ShopDTO getShopById(Long shopId) {
+        ShopDTO shopDTO = new ShopDTO();
+        Shop shop = shopRepo.findById(shopId).get();
+        shopDTO.setDeliveryRoute(shop.toDTO().getDeliveryRoute());
+        shopDTO.setShopId(shop.getShopId());
+        shopDTO.setShopName(shop.getShopName());
+        shopDTO.setAddress(shop.getAddress());
+        shopDTO.setPhoneNumber(shop.getPhoneNumber());
+        return shopDTO;
     }
 
     @Override

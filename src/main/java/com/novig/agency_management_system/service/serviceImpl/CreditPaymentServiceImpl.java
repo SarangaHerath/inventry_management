@@ -15,9 +15,13 @@ import com.novig.agency_management_system.service.CreditPaymentService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -116,12 +120,19 @@ public class CreditPaymentServiceImpl implements CreditPaymentService {
         }
     }
 
+
     @Transactional
-    public CreditPaymentDetails updateCreditPay(RequestCreditPaymentDto requestCreditPaymentDto) {
+    public ResponseEntity<?> updateCreditPay(RequestCreditPaymentDto requestCreditPaymentDto) {
         try {
             // Retrieve CreditPaymentDetails by ID
             CreditPaymentDetails creditPaymentDetails = creditPaymentRepo.findById(requestCreditPaymentDto.getCreditId())
                     .orElseThrow(() -> new IllegalArgumentException("Credit Payment not found with ID: " + requestCreditPaymentDto.getCreditId()));
+
+            // Check if credit amount is not negative after payment
+            if (creditPaymentDetails.getCreditAmount() - requestCreditPaymentDto.getPaidAmount() < 0) {
+                // Return a ResponseEntity with a custom error message and BAD_REQUEST status
+                return ResponseEntity.badRequest().body("Credit amount cannot be negative after payment");
+            }
 
             // Update credit amount and paid amount
             Double originalCreditAmount = creditPaymentDetails.getCreditAmount();
@@ -130,6 +141,7 @@ public class CreditPaymentServiceImpl implements CreditPaymentService {
             // Update CreditPaymentDetails
             creditPaymentDetails.setCreditAmount(originalCreditAmount - requestCreditPaymentDto.getPaidAmount());
             creditPaymentDetails.setPaidAmount(originalPaidAmount + requestCreditPaymentDto.getPaidAmount());
+            creditPaymentDetails.setLastPaymentDate(requestCreditPaymentDto.getLastPaymentDate());
 
             // Save the updated CreditPaymentDetails and return the updated entity
             CreditPaymentDetails updatedCreditPaymentDetails = creditPaymentRepo.save(creditPaymentDetails);
@@ -145,12 +157,19 @@ public class CreditPaymentServiceImpl implements CreditPaymentService {
                 salesInvoiceRepo.save(salesInvoice);
             }
 
-            return updatedCreditPaymentDetails;
+            // Return the updated CreditPaymentDetails
+            return ResponseEntity.ok(updatedCreditPaymentDetails);
+
+        } catch (IllegalArgumentException e) {
+            // Handle IllegalArgumentException (Credit Payment not found)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Credit Payment not found: " + e.getMessage());
         } catch (Exception e) {
-            // Handle exceptions and log appropriately
-            throw new RuntimeException("Error updating credit payment: " + e.getMessage(), e);
+            // Handle other exceptions and return a ResponseEntity with a custom error message and INTERNAL_SERVER_ERROR status
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating credit payment: " + e.getMessage());
         }
     }
+
+
 
 }
 

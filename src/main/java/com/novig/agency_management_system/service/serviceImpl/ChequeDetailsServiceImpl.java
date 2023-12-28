@@ -34,6 +34,7 @@ public class ChequeDetailsServiceImpl implements ChequeDetailsService {
         chequeDetails.setReceivedDate(requestChequeDto.getReceivedDate());
         chequeDetails.setBankDate(requestChequeDto.getBankDate());
         chequeDetails.setAmount(requestChequeDto.getAmount());
+        chequeDetails.setRemark(requestChequeDto.getRemark());
         chequeDetails.setShop(shop);
 
         chequeDetailsRepo.save(chequeDetails);
@@ -62,6 +63,7 @@ public class ChequeDetailsServiceImpl implements ChequeDetailsService {
             chequeDetails.setReceivedDate(requestChequeDto.getReceivedDate());
             chequeDetails.setBankDate(requestChequeDto.getBankDate());
             chequeDetails.setAmount(requestChequeDto.getAmount());
+            chequeDetails.setRemark(requestChequeDto.getRemark());
             chequeDetailsRepo.save(chequeDetails);
             return chequeDetails;
         } else {

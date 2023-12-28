@@ -57,8 +57,8 @@ public class ShopController {
     }
 
     @GetMapping("/get-by-id/{id}")
-    public ResponseEntity<Shop> getShopById(@PathVariable Long id) {
-        Shop shop = shopService.getShopById(id);
+    public ResponseEntity<ShopDTO> getShopById(@PathVariable Long id) {
+        ShopDTO shop = shopService.getShopById(id);
         return ResponseEntity.ok(shop);
     }
     @GetMapping("/by-delivery-route/{deliveryRouteId}")
