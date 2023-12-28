@@ -13,4 +13,6 @@ public interface CategoryService {
     Category updateCategory(RequestCategoryDto requestCategoryDto);
 
     String deleteCategory(Long id);
+
+    Category getCategoryById(Long id);
 }
