@@ -49,9 +49,27 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public String deleteProduct(Long id) {
-        productRepo.deleteById(id);
-        return "Deleted !!";
+    public String deleteProduct(Long productId) {
+        try {
+            // Check for related entities and delete or update them first
+
+            Optional<Product> productOptional = productRepo.findById(productId);
+
+            if (productOptional.isPresent()) {
+                Product product = productOptional.get();
+                product.setCategory(null); // Or setCategory to another default category if needed
+                productRepo.save(product);
+
+                // Now delete the product
+                productRepo.deleteById(productId);
+
+                return "Product with ID " + productId + " deleted successfully.";
+            } else {
+                return "Product with ID " + productId + " not found.";
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error deleting product: " + e.getMessage(), e);
+        }
     }
 
     @Override
