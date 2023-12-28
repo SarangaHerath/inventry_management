@@ -4,13 +4,16 @@ import com.novig.agency_management_system.dto.requestDto.RequestChequeDateRangeD
 import com.novig.agency_management_system.dto.requestDto.RequestCreditPaymentDto;
 import com.novig.agency_management_system.entity.ChequeDetails;
 import com.novig.agency_management_system.entity.CreditPaymentDetails;
+import com.novig.agency_management_system.entity.SalesInvoice;
 import com.novig.agency_management_system.entity.Shop;
 import com.novig.agency_management_system.exception.CustomNotFoundException;
 import com.novig.agency_management_system.exception.DatabaseOperationException;
 import com.novig.agency_management_system.repository.CreditPaymentRepo;
+import com.novig.agency_management_system.repository.SalesInvoiceRepo;
 import com.novig.agency_management_system.repository.ShopRepo;
 import com.novig.agency_management_system.service.CreditPaymentService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +27,9 @@ public class CreditPaymentServiceImpl implements CreditPaymentService {
     private ShopRepo shopRepo;
     @Autowired
     private CreditPaymentRepo creditPaymentRepo;
+
+    @Autowired
+    private SalesInvoiceRepo salesInvoiceRepo;
 
     @Override
     public CreditPaymentDetails saveCreditPaymentDetails(RequestCreditPaymentDto requestCreditPaymentDto) {
@@ -48,9 +54,23 @@ public class CreditPaymentServiceImpl implements CreditPaymentService {
 
     @Override
     public List<CreditPaymentDetails> getAllCreditPayment() {
-        List<CreditPaymentDetails> creditPaymentDetailsList = creditPaymentRepo.findAll();
-        return creditPaymentDetailsList;
+        try {
+            List<CreditPaymentDetails> creditPaymentDetailsList = creditPaymentRepo.findAll();
+
+            if (creditPaymentDetailsList.isEmpty()) {
+                // Handle the case where no CreditPaymentDetails are found.
+                // You can throw an exception or return an empty list based on your requirements.
+                throw new CustomNotFoundException("No CreditPaymentDetails found");
+            }
+
+            return creditPaymentDetailsList;
+        } catch (Exception e) {
+            // Handle any other exceptions that might occur during the database operation.
+            // You might want to log the exception or rethrow a custom exception.
+            throw new DatabaseOperationException("Error fetching all CreditPaymentDetails", e);
+        }
     }
+
 
     @Override
     public CreditPaymentDetails updateCreditPayment(RequestCreditPaymentDto requestCreditPaymentDto) {
@@ -95,5 +115,42 @@ public class CreditPaymentServiceImpl implements CreditPaymentService {
             throw new DatabaseOperationException("Error fetching ChequeDetails with ID " + id, e);
         }
     }
+
+    @Transactional
+    public CreditPaymentDetails updateCreditPay(RequestCreditPaymentDto requestCreditPaymentDto) {
+        try {
+            // Retrieve CreditPaymentDetails by ID
+            CreditPaymentDetails creditPaymentDetails = creditPaymentRepo.findById(requestCreditPaymentDto.getCreditId())
+                    .orElseThrow(() -> new IllegalArgumentException("Credit Payment not found with ID: " + requestCreditPaymentDto.getCreditId()));
+
+            // Update credit amount and paid amount
+            Double originalCreditAmount = creditPaymentDetails.getCreditAmount();
+            Double originalPaidAmount = creditPaymentDetails.getPaidAmount();
+
+            // Update CreditPaymentDetails
+            creditPaymentDetails.setCreditAmount(originalCreditAmount - requestCreditPaymentDto.getPaidAmount());
+            creditPaymentDetails.setPaidAmount(originalPaidAmount + requestCreditPaymentDto.getPaidAmount());
+
+            // Save the updated CreditPaymentDetails and return the updated entity
+            CreditPaymentDetails updatedCreditPaymentDetails = creditPaymentRepo.save(creditPaymentDetails);
+
+            // Update SalesInvoice
+            SalesInvoice salesInvoice = updatedCreditPaymentDetails.getSalesInvoice();
+            if (salesInvoice != null) {
+                // Update credit, cash, etc. based on the paid amount
+                salesInvoice.setCredit(salesInvoice.getCredit() - requestCreditPaymentDto.getPaidAmount());
+                salesInvoice.setCash(salesInvoice.getCash() + requestCreditPaymentDto.getPaidAmount());
+
+                // Save the updated SalesInvoice
+                salesInvoiceRepo.save(salesInvoice);
+            }
+
+            return updatedCreditPaymentDetails;
+        } catch (Exception e) {
+            // Handle exceptions and log appropriately
+            throw new RuntimeException("Error updating credit payment: " + e.getMessage(), e);
+        }
+    }
+
 }
 

@@ -34,4 +34,8 @@ public class CreditPaymentDetails {
 
     @Column(name = "last_payment_date")
     private LocalDate lastPaymentDate;
+
+    @ManyToOne
+    @JoinColumn(name = "sales_invoice_id")
+    private SalesInvoice salesInvoice;
 }
