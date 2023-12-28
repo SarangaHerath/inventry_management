@@ -1,6 +1,7 @@
 package com.novig.agency_management_system.service.serviceImpl;
 
 import com.novig.agency_management_system.dto.requestDto.RequestStockOutDto;
+import com.novig.agency_management_system.dto.responseDto.CategoryWiseProductDto;
 import com.novig.agency_management_system.entity.Product;
 import com.novig.agency_management_system.entity.StockOut;
 import com.novig.agency_management_system.entity.Vehicle;
@@ -12,7 +13,9 @@ import com.novig.agency_management_system.service.StockOutService;
 import com.novig.agency_management_system.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -152,5 +155,22 @@ public class StockOutServiceImpl implements StockOutService {
         }
     }
 
+    @Override
+    @Transactional
+    public List<CategoryWiseProductDto> getProductsByCategory(Long categoryId) {
+        List<StockOut> stockOutList = stockOutRepo.findByProduct_Category_CategoryId(categoryId);
+        List<CategoryWiseProductDto> result = new ArrayList<>();
+
+        for (StockOut stockOut : stockOutList) {
+            CategoryWiseProductDto dto = new CategoryWiseProductDto();
+            dto.setProductId(stockOut.getProduct().getProductId());
+            dto.setProductName(stockOut.getProduct().getProductName());
+            dto.setQuantity(stockOut.getQuantity());
+            dto.setUnitPrice(stockOut.getProduct().getUnitPrice());
+            dto.setWeight(stockOut.getProduct().getWeight());
+            result.add(dto);
+        }
+        return result;
+    }
 
 }

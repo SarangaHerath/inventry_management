@@ -1,6 +1,7 @@
 package com.novig.agency_management_system.service;
 
 import com.novig.agency_management_system.dto.requestDto.RequestStockOutDto;
+import com.novig.agency_management_system.dto.responseDto.CategoryWiseProductDto;
 import com.novig.agency_management_system.entity.Product;
 import com.novig.agency_management_system.entity.StockOut;
 
@@ -18,4 +19,6 @@ public interface StockOutService {
     List<StockOut> getOutOfStockProductDetails(Long productId);
 
     StockOut getByIdStockOut(Long id);
+
+    List<CategoryWiseProductDto> getProductsByCategory(Long categoryId);
 }

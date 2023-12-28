@@ -1,6 +1,7 @@
 package com.novig.agency_management_system.controller;
 
 import com.novig.agency_management_system.dto.requestDto.RequestStockOutDto;
+import com.novig.agency_management_system.dto.responseDto.CategoryWiseProductDto;
 import com.novig.agency_management_system.entity.Product;
 import com.novig.agency_management_system.entity.StockOut;
 import com.novig.agency_management_system.service.StockOutService;
@@ -55,4 +56,10 @@ public class StockOutController {
         List<StockOut> outOfStockDetails = stockOutService.getOutOfStockProductDetails(productId);
         return ResponseEntity.ok(outOfStockDetails);
     }
+    @GetMapping("/productsByCategory/{categoryId}")
+    public ResponseEntity<List<CategoryWiseProductDto>> getProductsByCategory(@PathVariable Long categoryId){
+        List<CategoryWiseProductDto> categoryWiseProductDtos = stockOutService.getProductsByCategory(categoryId);
+        return ResponseEntity.ok(categoryWiseProductDtos);
+    }
+
 }

@@ -14,4 +14,6 @@ public interface StockOutRepo extends JpaRepository<StockOut, Long> {
     List<StockOut> findByProduct_ProductId(Long productId);
 
 
+    List<StockOut> findByProduct_Category_CategoryId(Long categoryId);
+
 }
