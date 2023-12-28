@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StockOutServiceImpl implements StockOutService {
@@ -151,6 +152,15 @@ public class StockOutServiceImpl implements StockOutService {
             throw new RuntimeException("Error fetching StockOut by id: " + id, e);
         }
     }
+    @Override
+    public List<StockOut> getOutOfStockProductsByCategoryId(Long categoryId) {
+        // Retrieve out-of-stock product details based on category
+        List<StockOut> outOfStockDetails = stockOutRepo.findByProduct_Category_CategoryId(categoryId);
 
+        // Filter out entries where the product quantity is greater than 0
+        return outOfStockDetails.stream()
+                .filter(stockOut -> stockOut.getProduct().getQuantity() == 0)
+                .collect(Collectors.toList());
+    }
 
 }

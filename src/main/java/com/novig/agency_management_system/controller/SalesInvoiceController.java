@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping("/api/v1/sales-invoices")
+
 public class SalesInvoiceController {
 
     @Autowired
@@ -65,6 +66,4 @@ public class SalesInvoiceController {
         TotalSaleDetailsDTO totalSaleDetailsDateRange = salesInvoiceService.calTotalSaleDetailsByDateRange(dateRangeRequestDto);
         return ResponseEntity.ok(totalSaleDetailsDateRange);
     }
-
-
 }

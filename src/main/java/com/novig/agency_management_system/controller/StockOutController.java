@@ -55,4 +55,9 @@ public class StockOutController {
         List<StockOut> outOfStockDetails = stockOutService.getOutOfStockProductDetails(productId);
         return ResponseEntity.ok(outOfStockDetails);
     }
+    @GetMapping("/out-of-stock-by-category/{categoryId}")
+    public ResponseEntity<List<StockOut>> getOutOfStockProductsByCategoryId(@PathVariable Long categoryId) {
+        List<StockOut> outOfStockProducts = stockOutService.getOutOfStockProductsByCategoryId(categoryId);
+        return ResponseEntity.ok(outOfStockProducts);
+    }
 }

@@ -18,4 +18,6 @@ public interface StockOutService {
     List<StockOut> getOutOfStockProductDetails(Long productId);
 
     StockOut getByIdStockOut(Long id);
+
+    List<StockOut> getOutOfStockProductsByCategoryId(Long categoryId);
 }

@@ -117,4 +117,8 @@ public class ProductServiceImpl implements ProductService {
         return productRepo.findById(id);
     }
 
+    @Override
+    public List<Product> getProductsByCategoryId(Long categoryId) {
+        return productRepo.findByCategoryCategoryId(categoryId);
+    }
 }

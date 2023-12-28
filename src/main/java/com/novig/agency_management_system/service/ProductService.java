@@ -15,4 +15,6 @@ public interface ProductService {
 
     Product updateProduct(RequestProductDto requestProductDto);
     Optional<Product> getProductById(Long id);
+
+    List<Product> getProductsByCategoryId(Long categoryId);
 }
