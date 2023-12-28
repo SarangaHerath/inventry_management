@@ -66,5 +66,4 @@ public class SalesInvoiceController {
         return ResponseEntity.ok(totalSaleDetailsDateRange);
     }
 
-
 }

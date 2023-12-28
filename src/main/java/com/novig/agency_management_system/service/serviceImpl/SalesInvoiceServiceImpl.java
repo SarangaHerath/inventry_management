@@ -5,6 +5,15 @@ import com.novig.agency_management_system.dto.requestDto.ProductDto;
 import com.novig.agency_management_system.dto.requestDto.RequestFreeIssueDto;
 import com.novig.agency_management_system.dto.requestDto.SalesInvoiceDTO;
 import com.novig.agency_management_system.dto.responseDto.ResponseDailyTotalSalesDto;
+
+import com.novig.agency_management_system.dto.responseDto.TotalSaleDetailsDTO;
+import com.novig.agency_management_system.entity.*;
+import com.novig.agency_management_system.repository.SalesInvoiceDetailsRepo;
+import com.novig.agency_management_system.repository.SalesInvoiceRepo;
+import com.novig.agency_management_system.repository.ShopRepo;
+
+import com.novig.agency_management_system.entity.*;
+import com.novig.agency_management_system.repository.*;
 import com.novig.agency_management_system.dto.responseDto.TotalSaleDetailsDTO;
 import com.novig.agency_management_system.entity.*;
 import com.novig.agency_management_system.repository.*;

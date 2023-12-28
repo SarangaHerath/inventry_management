@@ -2,6 +2,7 @@ package com.novig.agency_management_system.controller;
 
 import com.novig.agency_management_system.dto.requestDto.RequestCategoryDto;
 import com.novig.agency_management_system.entity.Category;
+import com.novig.agency_management_system.entity.DeliveryRoute;
 import com.novig.agency_management_system.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,12 @@ public class CategoryController {
     public ResponseEntity<List<Category>> getAllCategory(){
          List<Category> list = categoryService.getAllCategory();
          return  ResponseEntity.ok(list);
+    }
+
+    @GetMapping("/getById/{id}")
+    public ResponseEntity<Category> getCategoryById(@PathVariable Long id){
+        Category category = categoryService.getCategoryById(id);
+        return ResponseEntity.ok(category);
     }
 
     @PutMapping("/update")
