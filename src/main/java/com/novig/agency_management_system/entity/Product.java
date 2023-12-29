@@ -34,7 +34,7 @@ public class Product {
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE) // Set up cascading for removal
     @JoinColumn(name = "category_id")
     private Category category;
 }
