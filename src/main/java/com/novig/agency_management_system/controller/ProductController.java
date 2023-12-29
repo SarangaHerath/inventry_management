@@ -50,7 +50,7 @@ public class ProductController {
         Optional<Product> optionalProduct = productService.getProductById(id);
 
         return optionalProduct
-                .map(product -> ResponseEntity.ok(product))
+                .map(Product -> ResponseEntity.ok(Product))
                 .orElse(ResponseEntity.notFound().build());
     }
     @GetMapping("/by-category/{categoryId}")
