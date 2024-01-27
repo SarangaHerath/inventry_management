@@ -34,4 +34,11 @@ public interface SalesInvoiceRepo extends JpaRepository<SalesInvoice, Long> {
 
     @Query("SELECT SUM(si.returnValue) FROM SalesInvoice si WHERE si.date BETWEEN :startDate AND :endDate")
     Double getTotalReturnValuesCountByDateRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+    @Query("SELECT COALESCE(SUM(si.cheque), 0) " +
+            "FROM SalesInvoice si " +
+            "WHERE si.date BETWEEN :startDate AND :endDate")
+    Double getTotalChequeValuesCountByDateRange(@Param("startDate") LocalDate startDate,
+                                                @Param("endDate") LocalDate endDate);
 }
+

@@ -50,6 +50,9 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
     @Autowired
     private CreditPaymentRepo creditPaymentRepo;
 
+    @Autowired
+    private FreeIssueRepo freeIssueRepo;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -133,6 +136,9 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
 
             // Set the FreeIssue list to the FreeIsuue entity
             salesInvoice.setFreeIssueList(freeIssueList);
+
+            // Save the FreeIssue entities
+            freeIssueRepo.saveAll(freeIssueList);
             // Save the SalesInvoice entity, which will cascade to SalesInvoiceDetails due to CascadeType.ALL
             salesInvoiceRepo.save(salesInvoice);
         } catch (Exception e) {
@@ -217,6 +223,10 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
         Double totalDiscount = salesInvoiceRepo.getTotalDiscountCountByDateRange(startDate, endDate);
         Double totalFreeItems = salesInvoiceRepo.getTotalFreeItemsCountByDateRange(startDate, endDate);
         Double totalReturnValues = salesInvoiceRepo.getTotalReturnValuesCountByDateRange(startDate, endDate);
+        Double totalCheque = salesInvoiceRepo.getTotalChequeValuesCountByDateRange(startDate, endDate);
+        Double totalCredit = creditPaymentRepo.getTotalCreditValuesCountByDateRange(startDate, endDate);
+        Double totalCash =totalSale - (totalCheque+totalCredit);
+
 
         TotalSaleDetailsDTO totalSaleDetailsDTO = new TotalSaleDetailsDTO();
         totalSaleDetailsDTO.setRowCount(rowCount);
@@ -224,6 +234,9 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
         totalSaleDetailsDTO.setTotalDiscount(totalDiscount);
         totalSaleDetailsDTO.setTotalReturnValues(totalReturnValues);
         totalSaleDetailsDTO.setTotalFreeItems(totalFreeItems);
+        totalSaleDetailsDTO.setTotalCheque(totalCheque);
+        totalSaleDetailsDTO.setTotalCredit(totalCredit);
+        totalSaleDetailsDTO.setTotalCash(totalCash);
 
         return totalSaleDetailsDTO;
     }

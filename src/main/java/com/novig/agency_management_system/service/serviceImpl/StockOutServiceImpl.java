@@ -155,22 +155,39 @@ public class StockOutServiceImpl implements StockOutService {
         }
     }
 
-    @Override
-    @Transactional
-    public List<CategoryWiseProductDto> getProductsByCategory(Long categoryId) {
-        List<StockOut> stockOutList = stockOutRepo.findByProduct_Category_CategoryId(categoryId);
-        List<CategoryWiseProductDto> result = new ArrayList<>();
+//    @Override
+//    @Transactional
+//    public List<CategoryWiseProductDto> getProductsByCategory(Long categoryId) {
+//        List<StockOut> stockOutList = stockOutRepo.findByProduct_Category_CategoryId(categoryId);
+//        List<CategoryWiseProductDto> result = new ArrayList<>();
+//
+//        for (StockOut stockOut : stockOutList) {
+//            CategoryWiseProductDto dto = new CategoryWiseProductDto();
+//            dto.setProductId(stockOut.getProduct().getProductId());
+//            dto.setProductName(stockOut.getProduct().getProductName());
+//            dto.setQuantity(stockOut.getQuantity());
+//            dto.setUnitPrice(stockOut.getProduct().getUnitPrice());
+//            dto.setWeight(stockOut.getProduct().getWeight());
+//            result.add(dto);
+//        }
+//        return result;
+//    }
+@Override
+@Transactional
+public List<CategoryWiseProductDto> getProductsByCategory(Long categoryId) {
+    List<Product> productList = productRepo.findByCategory_CategoryId(categoryId);
+    List<CategoryWiseProductDto> result = new ArrayList<>();
 
-        for (StockOut stockOut : stockOutList) {
-            CategoryWiseProductDto dto = new CategoryWiseProductDto();
-            dto.setProductId(stockOut.getProduct().getProductId());
-            dto.setProductName(stockOut.getProduct().getProductName());
-            dto.setQuantity(stockOut.getQuantity());
-            dto.setUnitPrice(stockOut.getProduct().getUnitPrice());
-            dto.setWeight(stockOut.getProduct().getWeight());
-            result.add(dto);
-        }
-        return result;
+    for (Product product : productList) {
+        CategoryWiseProductDto dto = new CategoryWiseProductDto();
+        dto.setProductId(product.getProductId());
+        dto.setProductName(product.getProductName());
+        dto.setQuantity(product.getQuantity());
+        dto.setUnitPrice(product.getUnitPrice());
+        dto.setWeight(product.getWeight());
+        result.add(dto);
     }
+    return result;
+}
 
 }

@@ -12,4 +12,6 @@ import java.util.List;
 public interface ProductRepo extends JpaRepository<Product, Long> {
 //    List<Product> findBySaleInvoiceId(Long saleInvoiceId);
     List<Product> findByCategoryCategoryId(Long categoryId);
+
+    List<Product> findByCategory_CategoryId(Long categoryId);
 }

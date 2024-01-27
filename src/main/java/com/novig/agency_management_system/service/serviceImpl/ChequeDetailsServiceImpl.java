@@ -12,6 +12,7 @@ import com.novig.agency_management_system.service.ChequeDetailsService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,8 +50,18 @@ public class ChequeDetailsServiceImpl implements ChequeDetailsService {
 
     @Override
     public List<ChequeDetails> getAllCheque() {
-        List<ChequeDetails> chequeDetailsList = chequeDetailsRepo.findAll();
-        return chequeDetailsList;
+        try {
+            // Specify the sorting order by bank date
+            Sort sort = Sort.by(Sort.Order.asc("bankDate"));
+
+            // Fetch the data sorted by bank date
+            List<ChequeDetails> chequeDetailsList = chequeDetailsRepo.findAll(sort);
+
+            return chequeDetailsList;
+        } catch (Exception e) {
+            // You can log the exception or handle it in a way that suits your application
+            throw new RuntimeException("Error occurred while fetching sorted cheque details", e);
+        }
     }
 
     @Override

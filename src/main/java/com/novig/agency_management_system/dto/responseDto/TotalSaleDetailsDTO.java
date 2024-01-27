@@ -13,5 +13,8 @@ public class TotalSaleDetailsDTO {
     Double totalDiscount;
     Double totalFreeItems;
     Double totalReturnValues;
+    Double totalCheque;
+    Double totalCredit;
+    Double totalCash;
 
 }
