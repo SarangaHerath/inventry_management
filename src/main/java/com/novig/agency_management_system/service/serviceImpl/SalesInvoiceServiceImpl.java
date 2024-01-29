@@ -1,9 +1,7 @@
 package com.novig.agency_management_system.service.serviceImpl;
 
-import com.novig.agency_management_system.dto.requestDto.DateRangeRequestDto;
-import com.novig.agency_management_system.dto.requestDto.ProductDto;
-import com.novig.agency_management_system.dto.requestDto.RequestFreeIssueDto;
-import com.novig.agency_management_system.dto.requestDto.SalesInvoiceDTO;
+import com.novig.agency_management_system.dto.requestDto.*;
+import com.novig.agency_management_system.dto.responseDto.ResponseAggDataDto;
 import com.novig.agency_management_system.dto.responseDto.ResponseDailyTotalSalesDto;
 
 import com.novig.agency_management_system.dto.responseDto.TotalSaleDetailsDTO;
@@ -240,6 +238,47 @@ public class SalesInvoiceServiceImpl implements SalesInvoiceService {
 
         return totalSaleDetailsDTO;
     }
+
+    @Override
+    public ResponseAggDataDto getAggregatedData(AggDateRangeRequestDto aggDateRangeRequestDto) {
+        LocalDate startDate = aggDateRangeRequestDto.getFromDate();
+        LocalDate endDate = aggDateRangeRequestDto.getToDate();
+
+        List<SalesInvoice> result = salesInvoiceRepo.getAggregatedData(startDate, endDate);
+
+        // Perform aggregation logic on the list of SalesInvoice entities
+        double totalSale = 0.0;
+        double totalDiscount = 0.0;
+        double totalFreeItems = 0.0;
+        double totalReturnValues = 0.0;
+        double totalCheque = 0.0;
+        double totalCredit = 0.0;
+        double totalCash = 0.0;
+
+        for (SalesInvoice salesInvoice : result) {
+            // Adjust the aggregation logic based on your entity structure
+            totalSale += salesInvoice.getTotal();
+            totalDiscount += salesInvoice.getDiscount();
+            totalFreeItems += salesInvoice.getFreeItems();
+            totalReturnValues += salesInvoice.getReturnValue();
+            totalCheque += salesInvoice.getCheque();
+            totalCredit += salesInvoice.getCredit();
+            totalCash += salesInvoice.getCash();
+        }
+
+        // Create the ResponseAggDataDto and set values based on the aggregated result
+        ResponseAggDataDto responseAggDataDto = new ResponseAggDataDto();
+        responseAggDataDto.setTotalSale(totalSale);
+        responseAggDataDto.setTotalDiscount(totalDiscount);
+        responseAggDataDto.setTotalFreeItems(totalFreeItems);
+        responseAggDataDto.setTotalReturnValues(totalReturnValues);
+        responseAggDataDto.setTotalCheque(totalCheque);
+        responseAggDataDto.setTotalCredit(totalCredit);
+        responseAggDataDto.setTotalCash(totalCash);
+
+        return responseAggDataDto;
+    }
+
 
 
     private Double parseDouble(String value) {

@@ -100,28 +100,38 @@ public class StockOutServiceImpl implements StockOutService {
 
             // Check if the requested quantity is less than or equal to the available quantity
             if (requestStockOutDto.getQuantity() <= product.getQuantity()) {
-                // Create a new StockOut entry
-                StockOut newStockOut = new StockOut();
-                newStockOut.setQuantity(requestStockOutDto.getQuantity());
-                newStockOut.setDateOut(requestStockOutDto.getDateOut());
-
                 // Retrieve the associated Vehicle entity
                 Optional<Vehicle> vehicleOptional = vehicleRepo.findById(requestStockOutDto.getVehicleId());
 
                 if (vehicleOptional.isPresent()) {
                     Vehicle vehicle = vehicleOptional.get();
-                    newStockOut.setVehicle(vehicle);
 
-                    // Set the associated Product entity
-                    newStockOut.setProduct(product);
+                    // Check if there is an existing StockOut for the given Product and Vehicle
+                    Optional<StockOut> existingStockOut = stockOutRepo.findByProductAndVehicle(product, vehicle);
 
-                    // Update the product quantity
-                    int updatedProductQuantity = product.getQuantity() - requestStockOutDto.getQuantity();
-                    product.setQuantity(updatedProductQuantity);
-                    productRepo.save(product);
+                    if (existingStockOut.isPresent()) {
+                        // Update the existing StockOut entry
+                        StockOut stockOutToUpdate = existingStockOut.get();
+                        int updatedQuantity = stockOutToUpdate.getQuantity() + requestStockOutDto.getQuantity();
+                        stockOutToUpdate.setQuantity(updatedQuantity);
+                        stockOutToUpdate.setDateOut(requestStockOutDto.getDateOut());
+                        return stockOutRepo.save(stockOutToUpdate);
+                    } else {
+                        // Create a new StockOut entry
+                        StockOut newStockOut = new StockOut();
+                        newStockOut.setQuantity(requestStockOutDto.getQuantity());
+                        newStockOut.setDateOut(requestStockOutDto.getDateOut());
+                        newStockOut.setVehicle(vehicle);
+                        newStockOut.setProduct(product);
 
-                    // Save the new StockOut entry
-                    return stockOutRepo.save(newStockOut);
+                        // Update the product quantity
+                        int updatedProductQuantity = product.getQuantity() - requestStockOutDto.getQuantity();
+                        product.setQuantity(updatedProductQuantity);
+                        productRepo.save(product);
+
+                        // Save the new StockOut entry
+                        return stockOutRepo.save(newStockOut);
+                    }
                 } else {
                     // Handle the case where the Vehicle does not exist
                     throw new IllegalArgumentException("Invalid Vehicle ID");
@@ -135,6 +145,7 @@ public class StockOutServiceImpl implements StockOutService {
             throw new IllegalArgumentException("Invalid Product ID");
         }
     }
+
     @Override
     public List<StockOut> getOutOfStockProductDetails(Long productId) {
         // Implement logic to retrieve out-of-stock product details based on productId

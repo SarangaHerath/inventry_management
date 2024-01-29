@@ -1,7 +1,9 @@
 package com.novig.agency_management_system.service;
 
+import com.novig.agency_management_system.dto.requestDto.AggDateRangeRequestDto;
 import com.novig.agency_management_system.dto.requestDto.DateRangeRequestDto;
 import com.novig.agency_management_system.dto.requestDto.SalesInvoiceDTO;
+import com.novig.agency_management_system.dto.responseDto.ResponseAggDataDto;
 import com.novig.agency_management_system.dto.responseDto.ResponseDailyTotalSalesDto;
 import com.novig.agency_management_system.dto.responseDto.TotalSaleDetailsDTO;
 import com.novig.agency_management_system.entity.SalesInvoice;
@@ -27,6 +29,8 @@ public interface SalesInvoiceService {
 //    TotalSaleDetailsDTO calTotalSaleDetailsByDateRange(LocalDate startDate, LocalDate endDate);
 
     TotalSaleDetailsDTO calTotalSaleDetailsByDateRange( DateRangeRequestDto dateRangeRequest);
+
+    ResponseAggDataDto getAggregatedData(AggDateRangeRequestDto aggDateRangeRequestDto);
 
 //    TotalSaleDetailsDTO calTotalSaleDetailsByDateRange(LocalDate startDate, LocalDate endDate);
 

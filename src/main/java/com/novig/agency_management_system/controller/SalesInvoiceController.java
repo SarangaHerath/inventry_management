@@ -1,8 +1,10 @@
 package com.novig.agency_management_system.controller;
 
+import com.novig.agency_management_system.dto.requestDto.AggDateRangeRequestDto;
 import com.novig.agency_management_system.dto.requestDto.DateRangeRequestDto;
 import com.novig.agency_management_system.dto.requestDto.RequestDailyTotalSalesDto;
 import com.novig.agency_management_system.dto.requestDto.SalesInvoiceDTO;
+import com.novig.agency_management_system.dto.responseDto.ResponseAggDataDto;
 import com.novig.agency_management_system.dto.responseDto.ResponseDailyTotalSalesDto;
 import com.novig.agency_management_system.dto.responseDto.TotalSaleDetailsDTO;
 import com.novig.agency_management_system.entity.SalesInvoice;
@@ -69,5 +71,10 @@ public class SalesInvoiceController {
         DateRangeRequestDto dateRangeRequestDto = new DateRangeRequestDto(startDate, endDate);
         TotalSaleDetailsDTO totalSaleDetailsDateRange = salesInvoiceService.calTotalSaleDetailsByDateRange(dateRangeRequestDto);
         return ResponseEntity.ok(totalSaleDetailsDateRange);
+    }
+    @GetMapping("/getAggregatedData")
+    public ResponseEntity<ResponseAggDataDto> getAggregatedData(@RequestBody AggDateRangeRequestDto aggDateRangeRequestDto) {
+        ResponseAggDataDto responseAggDataDto = salesInvoiceService.getAggregatedData(aggDateRangeRequestDto);
+        return ResponseEntity.ok(responseAggDataDto);
     }
 }

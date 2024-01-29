@@ -40,5 +40,8 @@ public interface SalesInvoiceRepo extends JpaRepository<SalesInvoice, Long> {
             "WHERE si.date BETWEEN :startDate AND :endDate")
     Double getTotalChequeValuesCountByDateRange(@Param("startDate") LocalDate startDate,
                                                 @Param("endDate") LocalDate endDate);
+
+    @Query("SELECT s FROM SalesInvoice s WHERE s.date BETWEEN :startDate AND :endDate")
+    List<SalesInvoice> getAggregatedData(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 }
 

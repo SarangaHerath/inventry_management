@@ -1,6 +1,8 @@
 package com.novig.agency_management_system.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,7 +36,8 @@ public class Product {
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
-    @ManyToOne(cascade = CascadeType.REMOVE) // Set up cascading for removal
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "category_id")
+    @JsonIgnoreProperties("products")
     private Category category;
 }
